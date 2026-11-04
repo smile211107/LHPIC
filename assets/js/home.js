@@ -74,7 +74,7 @@ function initHomePage() {
     }
   }
 
-  // 2. Render 3 Featured Session Folders (Requirement 1: Kho ảnh chia theo từng buổi)
+  // 2. Render 3 Featured Session Folders (Google Drive Direct Embed)
   const galleryContainer = document.getElementById('home-gallery-grid');
   if (galleryContainer) {
     const albums = store.getAlbums().slice(0, 3);
@@ -83,15 +83,14 @@ function initHomePage() {
       galleryContainer.innerHTML = `<p class="col-span-full text-center text-slate-500 py-8">Chưa có album ảnh nào.</p>`;
     } else {
       galleryContainer.innerHTML = albums.map(alb => {
-        const count = alb.photoCount || (alb.photos ? alb.photos.length : 0);
         return `
           <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden card-hover flex flex-col justify-between group">
             
-            <div class="relative h-44 overflow-hidden bg-slate-100 cursor-pointer" onclick="window.location.href='gallery.html'">
+            <div class="relative h-44 overflow-hidden bg-slate-100 cursor-pointer" onclick="window.location.href='gallery.html?id=${alb.id}'">
               <img src="${alb.coverImage}" alt="${alb.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
               <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent flex items-end p-3.5">
-                <span class="text-xs text-white font-medium flex items-center gap-1.5 bg-slate-900/80 px-2 py-0.5 rounded-lg backdrop-blur-xs">
-                  ${ICONS.image} ${count} ảnh
+                <span class="text-xs text-white font-medium flex items-center gap-1.5 bg-slate-900/80 px-2.5 py-1 rounded-lg backdrop-blur-xs">
+                  ${ICONS.folderOpen} Khung Google Drive
                 </span>
               </div>
               <div class="absolute top-3 left-3">
@@ -113,13 +112,13 @@ function initHomePage() {
               </div>
 
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                <a href="gallery.html" 
+                <a href="gallery.html?id=${alb.id}" 
                    class="flex-1 py-2 text-center rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
-                  Mở folder ảnh
+                  Xem trực tiếp
                 </a>
                 <a href="${alb.driveLink || '#'}" target="_blank" rel="noopener noreferrer" 
-                   class="py-2 px-3 rounded-xl text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors cursor-pointer border border-blue-200 flex items-center gap-1">
-                  ${ICONS.drive} Drive
+                   class="py-2 px-3 rounded-xl text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors cursor-pointer border border-blue-200 flex items-center gap-1" title="Mở trên Google Drive">
+                  ${ICONS.drive} Drive ↗
                 </a>
               </div>
             </div>

@@ -219,42 +219,24 @@
         <!-- ================= SECTION B: ALBUMS (TỪNG BUỔI & GOOGLE DRIVE) ================= -->
         <div id="section-gallery" class="hidden p-6 sm:p-8 space-y-8">
           
-          <!-- Google Drive Bridge Setting Pill -->
-          <div class="bg-blue-50/60 p-5 rounded-2xl border border-blue-200 space-y-3 text-xs">
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-              <div class="space-y-1">
-                <div class="font-bold text-blue-900 flex items-center gap-1.5 text-sm">
-                  <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.5 1.15 15l3.43 6 6.55-11.5L7.71 3.5Zm3.71 6.5-3.43 6h13.72l3.43-6H11.42Zm4.87-6.5-6.56 11.5 3.43 6 6.56-11.5-3.43-6Z"/></svg>
-                  <span>Cấu Hình Tự Động Đọc 50 Ảnh Từ Google Drive (Google Apps Script)</span>
-                </div>
-                <p class="text-slate-600">
-                  Dán link Web App từ Google Apps Script (Xem hướng dẫn trong file <code class="bg-blue-100 text-blue-800 px-1 py-0.5 rounded font-mono font-bold">google-drive-bridge/Code.gs</code>).
-                </p>
-              </div>
-              <div class="flex items-center gap-2 w-full md:w-auto">
-                <input type="url" id="drive-bridge-url-input" placeholder="https://script.google.com/macros/s/.../exec" 
-                       class="px-3.5 py-2 rounded-xl border border-blue-200 text-xs bg-white w-full md:w-80 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button type="button" id="save-drive-bridge-btn" 
-                        class="px-3.5 py-2 rounded-xl font-bold text-xs text-white bg-blue-600 hover:bg-blue-700 transition-colors flex-shrink-0 cursor-pointer">
-                  Lưu
-                </button>
-                <button type="button" id="test-drive-bridge-btn" 
-                        class="px-3.5 py-2 rounded-xl font-bold text-xs text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors flex-shrink-0 cursor-pointer">
-                  Kiểm tra
-                </button>
-              </div>
+          <!-- Guide Pill -->
+          <div class="bg-blue-50/70 p-4 rounded-2xl border border-blue-200 flex items-start gap-3 text-xs text-blue-950">
+            <span class="text-blue-600 mt-0.5 flex-shrink-0">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.5 1.15 15l3.43 6 6.55-11.5L7.71 3.5Zm3.71 6.5-3.43 6h13.72l3.43-6H11.42Zm4.87-6.5-6.56 11.5 3.43 6 6.56-11.5-3.43-6Z"/></svg>
+            </span>
+            <div>
+              <strong class="block text-blue-900 font-bold mb-0.5">Khung Google Drive Trực Tiếp (Zero Script, Không Cần Cài Đặt)</strong>
+              <span>
+                Mỗi buổi sinh hoạt, Ban Truyền Thông chỉ cần tạo 1 thư mục ảnh trên Google Drive, bật quyền chia sẻ: <strong>"Bất kỳ ai có đường liên kết đều có thể xem"</strong> rồi dán link vào ô bên dưới. Website sẽ tự động nhúng toàn bộ ảnh trong thư mục để thành viên xem trực tiếp!
+              </span>
             </div>
-            <div id="drive-bridge-status" class="hidden p-3 rounded-xl border text-xs font-medium"></div>
           </div>
 
-          <!-- Upload / Add New Album Form -->
+          <!-- Add New Album Form -->
           <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-            <div class="flex items-start justify-between">
-              <div>
-                <h3 class="text-base font-extrabold text-slate-900 font-heading">Thêm Folder Ảnh Buổi Sinh Hoạt Mới</h3>
-                <p class="text-xs text-slate-500">Tạo folder cho buổi sinh hoạt và dán đường link thư mục Google Drive để các thành viên tiện tải về.</p>
-              </div>
-              <span class="text-xs font-mono bg-blue-100 text-blue-800 px-2.5 py-1 rounded-lg font-bold">Google Drive Ready</span>
+            <div>
+              <h3 class="text-base font-extrabold text-slate-900 font-heading">Thêm Thư Mục Ảnh Buổi Sinh Hoạt Mới</h3>
+              <p class="text-xs text-slate-500">Dán link Google Drive của buổi sinh hoạt để web nhúng xem trực tiếp.</p>
             </div>
 
             <form id="add-album-form" class="space-y-4">
@@ -267,7 +249,7 @@
                 </div>
 
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1" for="album-title">Chủ đề / Tiêu đề album *</label>
+                  <label class="block text-xs font-bold text-slate-700 mb-1" for="album-title">Chủ đề / Tiêu đề buổi sinh hoạt *</label>
                   <input type="text" id="album-title" required placeholder="Giao lưu thuật toán Đồ thị..." 
                          class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
                 </div>
@@ -280,34 +262,24 @@
 
               </div>
 
-              <!-- Drive Link & Photo Count -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-xs font-bold text-blue-700 mb-1" for="album-drivelink">Link Thư mục Google Drive (Chứa trọn bộ ảnh gốc) *</label>
-                  <input type="url" id="album-drivelink" required placeholder="https://drive.google.com/drive/folders/..." 
-                         class="w-full px-3.5 py-2 rounded-xl border border-blue-200 text-xs focus:ring-2 focus:ring-blue-500 bg-white">
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1" for="album-count">Số lượng ảnh trong thư mục</label>
-                  <input type="number" id="album-count" value="20" min="1" 
-                         class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
-                </div>
+              <!-- Drive Link (Required) -->
+              <div>
+                <label class="block text-xs font-bold text-blue-800 mb-1" for="album-drivelink">
+                  Đường dẫn Thư mục Google Drive (Link chia sẻ công khai) *
+                </label>
+                <input type="url" id="album-drivelink" required placeholder="https://drive.google.com/drive/folders/1abc...xyz" 
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs focus:ring-2 focus:ring-blue-500 bg-white">
+                <span class="text-[11px] text-slate-400 mt-1 block">Lưu ý: Thư mục Drive phải bật quyền xem là "Bất kỳ ai có đường liên kết".</span>
               </div>
 
-              <!-- Cover Image & Batch Multi-photos upload -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Ảnh bìa thư mục</label>
+              <!-- Cover Image (File or URL) -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Ảnh bìa đại diện thư mục</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input type="file" id="album-file-input" accept="image/*" 
                          class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
                   <input type="url" id="album-url-input" placeholder="Hoặc dán URL ảnh bìa (https://...)" 
-                         class="w-full mt-2 px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Tải nhiều ảnh xem trước cùng lúc (Tùy chọn)</label>
-                  <input type="file" id="album-multi-files" multiple accept="image/*" 
-                         class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
-                  <p class="text-[11px] text-slate-400 mt-1.5">Có thể chọn cùng lúc 10 đến 50 ảnh từ máy tính để hiển thị xem trước tức thì trên web.</p>
+                         class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
                 </div>
               </div>
 
@@ -332,7 +304,7 @@
 
           <!-- Existing Albums List -->
           <div class="space-y-4">
-            <h3 class="text-base font-extrabold text-slate-900 font-heading">Danh Sách Folder Đã Tạo</h3>
+            <h3 class="text-base font-extrabold text-slate-900 font-heading">Danh Sách Thư Mục Google Drive Đã Tạo</h3>
             <div id="admin-albums-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <!-- Dynamically populated -->
             </div>
