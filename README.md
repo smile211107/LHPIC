@@ -4,100 +4,57 @@ Trang web chính thức của **Câu lạc bộ Tin học Trường THPT Chuyên
 
 ---
 
-## 📌 1. Giới thiệu Dự án
+## 🌟 1. Định vị & Tinh thần Thiết kế
 
-Website được xây dựng theo chuẩn **UI-UX Pro Max** với các tiêu chí:
-* **Giao diện hiện đại, năng động & thân thiện:** Tông màu chủ đạo Trắng / Xám sáng kết hợp điểm nhấn Xanh đen (Navy) và Cam đất/Đỏ gạch, phù hợp với học sinh THCS và phụ huynh.
-* **Linh vật độc quyền:** Chú gấu trúc (Panda) đeo băng trán `LHPIC` gõ laptop với cửa sổ code phía sau chuẩn vector SVG sắc nét.
-* **Đầy đủ 5 trang nội dung & 1 phân hệ Quản trị (CMS):**
-  1. `index.html`: **Trang chủ (Homepage)** — Hero banner, Sứ mệnh, Lịch sinh hoạt tại Hội trường E, Sự kiện mới nhất, Thư viện ảnh tiêu biểu, Kêu gọi hành động.
-  2. `about.html`: **Về chúng tôi (About Us)** — Câu chuyện thành lập, sứ mệnh định hướng HSGTP, quy trình học tập 4 bước hàng tuần.
-  3. `events.html`: **Sự kiện & Hoạt động (Events)** — Bộ lọc chuyên đề (Sắp diễn ra / Đang diễn ra / Đã kết thúc), tìm kiếm thời gian thực, xem chi tiết modal & tải tài liệu.
-  4. `gallery.html`: **Thư viện ảnh (Gallery)** — Lưới hiển thị ảnh Hội trường E, học sinh làm bài contest, xem ảnh phóng to toàn màn hình (Lightbox) với phím mũi tên.
-  5. `contact.html`: **Liên hệ (Contact)** — Địa chỉ Hội trường E, Bản đồ, Form nhắn tin, và **2 Thẻ Kênh kết nối chính thức kèm Mã QR quét nhanh**:
-     * Fanpage Facebook: [https://www.facebook.com/LHPIC235](https://www.facebook.com/LHPIC235)
-     * Nhóm Zalo trao đổi ([LHPIC 2627]): [https://zalo.me/g/dfmcirov4fictruxm9n4](https://zalo.me/g/dfmcirov4fictruxm9n4)
-  6. `admin.html`: **Hệ thống Quản trị CMS** — Thêm, sửa, xóa sự kiện và tải ảnh mới lên thư viện trực tiếp mà không cần can thiệp vào code.
+* **Sân chơi học sinh tự nguyện, phi lợi nhuận:** Không mang tính chất trung tâm dạy thêm, không áp lực thi cử. Đây là ngôi nhà chung của các bạn học sinh THCS yêu thích máy tính và thuật toán, được dẫn dắt bởi tình yêu công nghệ của học sinh chuyên Tin Lê Hồng Phong.
+* **Phong cách UI-UX Pro Max:** Năng động, hiện đại, thân thiện với học sinh và phụ huynh. Tông màu Xanh đen Navy kết hợp Cam đất/Đỏ gạch nhiệt huyết trên nền sáng.
+* **Linh vật chú Gấu Trúc (Panda LHPIC):** Mang thông điệp *"Code together, Grow together!"*.
 
 ---
 
-## 💻 2. Xem thử website ngay trên máy tính
+## 📁 2. Cấu trúc 5 Trang Người Dùng & 1 Hệ Thống Quản Trị (CMS)
 
-Chỉ cần mở Terminal tại thư mục `LHPIC` và chạy lệnh sau (đã có sẵn trên mọi máy Mac):
+1. `index.html`: **Trang chủ** — Hero banner, Sứ mệnh 4 trụ cột cộng đồng, Lịch gặp mặt Thứ Bảy tại Hội trường E, Các buổi sinh hoạt gần nhất, **Kho Folder ảnh từng buổi** kèm link Google Drive.
+2. `about.html`: **Về CLB** — Câu chuyện thành lập do học sinh sáng lập, nhịp đập sinh hoạt 4 bước trong tuần, giải đáp thắc mắc cởi mở.
+3. `events.html`: **Buổi sinh hoạt & Thử thách** — Bộ lọc chuyên đề (Sắp diễn ra, Đang mở thử thách, Đã diễn ra), tìm kiếm theo tên, xem chi tiết và tài liệu chia sẻ.
+4. `gallery.html`: **Kho ảnh theo từng buổi sinh hoạt** — Mỗi buổi là 1 Folder ảnh riêng biệt:
+   * Hiển thị số lượng ảnh, ngày chụp, ảnh bìa và mô tả.
+   * **Nút mở Folder Google Drive** trực tiếp để xem trọn bộ ảnh gốc chất lượng cao và tải về máy.
+   * **Nút mở xem ảnh nhanh trên web** kèm Lightbox phóng to ảnh toàn màn hình (hỗ trợ phím mũi tên `←` / `→` và `ESC`).
+5. `contact.html`: **Giao lưu & Kết nối** — Kèm **2 Mã QR quét nhanh** và nút bấm vào **Nhóm Zalo [LHPIC 2627]** và **Fanpage Facebook**, địa chỉ Hội trường E.
+6. `admin.html`: **Cổng Quản trị BCN (CMS)**:
+   * Đăng nhập bảo mật (mặc định: `admin` / `lhpic2024`).
+   * **Quản lý Buổi sinh hoạt:** Thêm, sửa, xóa các chuyên đề và thử thách.
+   * **Quản lý Folder Kho ảnh:** Tạo thư mục buổi sinh hoạt mới, dán link Google Drive, tải ảnh bìa, cập nhật số lượng ảnh.
+   * **Sao lưu dữ liệu JSON** và **Khôi phục dữ liệu ban đầu**.
+
+---
+
+## 💻 3. Hướng dẫn xem thử website ngay trên máy tính
+
+Mở **Terminal** tại thư mục dự án và chạy:
 
 ```bash
-# Mở server cục bộ với Python
+cd /Users/Apple/Documents/LHPIC
 python3 -m http.server 3000
 ```
 
-Sau đó mở trình duyệt và truy cập: **`http://localhost:3000`**
+Sau đó mở trình duyệt và truy cập:
+* **Trang chủ:** [`http://localhost:3000`](http://localhost:3000)
+* **Kho ảnh từng buổi:** [`http://localhost:3000/gallery.html`](http://localhost:3000/gallery.html)
+* **Cổng quản trị Admin:** [`http://localhost:3000/admin.html`](http://localhost:3000/admin.html)
 
 ---
 
-## 🔑 3. Hướng dẫn sử dụng trang Quản trị (Admin CMS)
+## 🌐 4. Triển khai miễn phí lên Vercel (`lhpic.vercel.app`)
 
-1. Truy cập đường dẫn: **`http://localhost:3000/admin.html`**
-2. Đăng nhập với tài khoản mặc định:
-   * **Tên đăng nhập:** `admin` (hoặc `lhpic`)
-   * **Mật khẩu:** `lhpic2024`
-3. Các chức năng có trong CMS:
-   * **Quản lý Sự kiện:** Thêm buổi sinh hoạt mới, sửa ngày giờ, cập nhật trạng thái (Sắp diễn ra, Đang diễn ra, Đã kết thúc), gắn link tài liệu / Contest.
-   * **Quản lý Thư viện ảnh:** Chọn file ảnh từ máy tính (Upload tức thì) hoặc nhập link ảnh, chọn album (Hội trường E, Ban Chuyên môn, Contest...), xóa ảnh cũ.
-   * **Sao lưu dữ liệu:** Nút "Xuất sao lưu JSON" để tải dữ liệu về máy, nút "Khôi phục dữ liệu mẫu".
-   * **Đồng bộ tự động:** Dữ liệu lưu trong trình duyệt (`localStorage`) và cập nhật tức thì ra ngoài trang chủ, trang sự kiện và thư viện ảnh!
-
----
-
-## 🌐 4. Hướng dẫn Triển khai miễn phí lên Vercel (`lhpic.vercel.app`)
-
-### Cách 1: Đưa lên GitHub rồi kết nối Vercel (Khuyên dùng)
-1. Khởi tạo Git và đẩy mã nguồn lên GitHub:
+1. Đẩy mã nguồn lên GitHub:
    ```bash
-   git init
    git add .
-   git commit -m "Initial commit for LHPIC website"
-   # Đổi tên nhánh và liên kết repo GitHub của bạn
-   git branch -M main
-   git remote add origin https://github.com/<tai-khoan-cua-ban>/lhpic.git
-   git push -u origin main
+   git commit -m "Update: redesign gallery folders with Google Drive links and refresh club community vibe"
+   git push origin main
    ```
-2. Đăng nhập vào [Vercel](https://vercel.com).
-3. Nhấn **Add New Project** > Chọn kho lưu trữ `lhpic`.
-4. Tại mục **Project Name**, đặt tên là **`lhpic`** để sở hữu tên miền:
+2. Đăng nhập [Vercel](https://vercel.com) > Chọn kho lưu trữ `lhpic`.
+3. Đặt Project Name là **`lhpic`** để có tên miền:
    👉 **`https://lhpic.vercel.app`**
-5. Nhấn **Deploy**. Chỉ sau 10 giây website của CLB sẽ chính thức trực tuyến!
-
-### Cách 2: Triển khai trên Netlify hoặc GitHub Pages
-* **Netlify:** Kéo thả trực tiếp toàn bộ thư mục `LHPIC` vào trang [Netlify Drop](https://app.netlify.com/drop) và cấu hình subdomain là `lhpic.netlify.app`.
-* **GitHub Pages:** Vào mục Settings của Repository trên GitHub > Pages > chọn nhánh `main` > Save.
-
----
-
-## 📁 5. Cấu trúc thư mục
-
-```text
-LHPIC/
-├── index.html            # Trang chủ
-├── about.html            # Về chúng tôi (About Us)
-├── events.html           # Sự kiện & Hoạt động
-├── gallery.html          # Thư viện ảnh với Lightbox
-├── contact.html          # Liên hệ, Bản đồ & Mã QR (Facebook, Zalo)
-├── admin.html            # Cổng Quản trị viên (CMS)
-├── vercel.json           # Cấu hình Vercel tối ưu tốc độ & cache
-├── README.md             # Hướng dẫn chi tiết
-├── design-system/        # Bản quy chuẩn thiết kế UI-UX Pro Max
-│   └── lhpic/
-│       └── MASTER.md
-└── assets/
-    ├── css/
-    │   └── style.css     # Font, hiệu ứng chuyển động, thanh cuộn
-    ├── images/
-    │   └── panda-logo.svg# Logo gấu trúc LHPIC vector chuẩn
-    └── js/
-        ├── store.js      # Kho lưu trữ dữ liệu tập trung & LocalStorage
-        ├── components.js # Thanh điều hướng (Navbar), Footer & Toast
-        ├── home.js       # Logic hiển thị trang chủ
-        ├── events.js     # Logic bộ lọc & Modal sự kiện
-        ├── gallery.js    # Logic bộ lọc album & Lightbox xem ảnh
-        └── admin.js      # Logic quản trị CMS sự kiện & upload ảnh
-```
+4. Nhấn **Deploy**.

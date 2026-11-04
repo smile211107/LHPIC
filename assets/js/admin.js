@@ -1,5 +1,6 @@
 /**
  * Admin CMS Functionality for LHPIC
+ * Quản lý Buổi Sinh Hoạt & Quản lý Folder Kho Ảnh Từng Buổi (Google Drive)
  */
 
 function initAdminPage() {
@@ -17,7 +18,7 @@ function initAdminPage() {
   // Stats
   const statTotalEvents = document.getElementById('stat-total-events');
   const statUpcomingEvents = document.getElementById('stat-upcoming-events');
-  const statTotalPhotos = document.getElementById('stat-total-photos');
+  const statTotalAlbums = document.getElementById('stat-total-albums');
 
   // Tabs
   const tabEventsBtn = document.getElementById('tab-events-btn');
@@ -34,19 +35,19 @@ function initAdminPage() {
   const eventEditForm = document.getElementById('event-edit-form');
   const eventFormTitle = document.getElementById('event-form-title');
 
-  // Gallery
-  const addPhotoForm = document.getElementById('add-photo-form');
-  const photoFileInput = document.getElementById('photo-file-input');
-  const photoUrlInput = document.getElementById('photo-url-input');
-  const photoPreviewContainer = document.getElementById('photo-preview-container');
-  const photoPreviewImg = document.getElementById('photo-preview-img');
-  const adminGalleryGrid = document.getElementById('admin-gallery-grid');
+  // Albums (Folder Từng Buổi & Google Drive)
+  const addAlbumForm = document.getElementById('add-album-form');
+  const albumFileInput = document.getElementById('album-file-input');
+  const albumUrlInput = document.getElementById('album-url-input');
+  const albumPreviewContainer = document.getElementById('album-preview-container');
+  const albumPreviewImg = document.getElementById('album-preview-img');
+  const adminAlbumsGrid = document.getElementById('admin-albums-grid');
 
   // Reset & Backup
   const resetDefaultsBtn = document.getElementById('reset-defaults-btn');
   const exportJsonBtn = document.getElementById('export-json-btn');
 
-  let activePhotoDataUrl = '';
+  let activeCoverDataUrl = '';
 
   // Auth Check
   function checkAuth() {
@@ -107,16 +108,16 @@ function initAdminPage() {
   function renderDashboard() {
     renderStats();
     renderEventsTable();
-    renderGalleryGrid();
+    renderAlbumsGrid();
   }
 
   function renderStats() {
     const events = store.getEvents();
-    const gallery = store.getGallery();
+    const albums = store.getAlbums();
 
     if (statTotalEvents) statTotalEvents.textContent = events.length;
     if (statUpcomingEvents) statUpcomingEvents.textContent = events.filter(e => e.status === 'upcoming').length;
-    if (statTotalPhotos) statTotalPhotos.textContent = gallery.length;
+    if (statTotalAlbums) statTotalAlbums.textContent = albums.length;
   }
 
   // ============ EVENTS CRUD ============
@@ -124,7 +125,7 @@ function initAdminPage() {
     const events = store.getEvents();
 
     if (events.length === 0) {
-      eventsTbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Chưa có sự kiện nào. Hãy nhấn "Thêm Sự Kiện Mới".</td></tr>`;
+      eventsTbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Chưa có buổi sinh hoạt nào. Nhấn "Thêm Buổi Sinh Hoạt Mới" để tạo.</td></tr>`;
       return;
     }
 
@@ -133,9 +134,9 @@ function initAdminPage() {
       if (evt.status === 'upcoming') {
         statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Sắp diễn ra</span>`;
       } else if (evt.status === 'ongoing') {
-        statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">Đang diễn ra</span>`;
+        statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">Đang mở thử thách</span>`;
       } else {
-        statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">Đã kết thúc</span>`;
+        statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">Đã diễn ra</span>`;
       }
 
       return `
@@ -170,7 +171,7 @@ function initAdminPage() {
     eventEditForm.reset();
     document.getElementById('form-event-id').value = '';
     document.getElementById('form-date').value = new Date().toISOString().split('T')[0];
-    eventFormTitle.textContent = 'Thêm Sự Kiện / Buổi Sinh Hoạt Mới';
+    eventFormTitle.textContent = 'Thêm Buổi Sinh Hoạt / Chuyên Đề Mới';
     eventFormModal.classList.remove('hidden');
   });
 
@@ -201,7 +202,7 @@ function initAdminPage() {
     document.getElementById('form-doclink').value = evt.docLink || '';
     document.getElementById('form-contestlink').value = evt.contestLink || '';
 
-    eventFormTitle.textContent = 'Chỉnh Sửa Sự Kiện: ' + evt.title;
+    eventFormTitle.textContent = 'Chỉnh Sửa: ' + evt.title;
     eventFormModal.classList.remove('hidden');
   };
 
@@ -227,10 +228,10 @@ function initAdminPage() {
 
     if (id) {
       store.updateEvent(id, data);
-      window.LHPIC.showToast('Cập nhật sự kiện thành công!');
+      window.LHPIC.showToast('Cập nhật buổi sinh hoạt thành công!');
     } else {
       store.addEvent(data);
-      window.LHPIC.showToast('Thêm sự kiện mới thành công!');
+      window.LHPIC.showToast('Thêm buổi sinh hoạt mới thành công!');
     }
 
     closeEventModal();
@@ -239,36 +240,45 @@ function initAdminPage() {
 
   // Delete Event
   window.deleteEventConfirm = function(id) {
-    if (confirm('Bạn có chắc chắn muốn xóa sự kiện này? Hành động không thể hoàn tác.')) {
+    if (confirm('Bạn có chắc chắn muốn xóa buổi sinh hoạt này?')) {
       store.deleteEvent(id);
-      window.LHPIC.showToast('Đã xóa sự kiện.');
+      window.LHPIC.showToast('Đã xóa buổi sinh hoạt.');
       renderDashboard();
     }
   };
 
-  // ============ GALLERY CRUD ============
-  function renderGalleryGrid() {
-    const gallery = store.getGallery();
+  // ============ ALBUMS (FOLDERS TỪNG BUỔI & GOOGLE DRIVE) ============
+  function renderAlbumsGrid() {
+    const albums = store.getAlbums();
 
-    if (gallery.length === 0) {
-      adminGalleryGrid.innerHTML = `<p class="col-span-full text-center text-slate-400 py-6 text-xs">Thư viện chưa có ảnh nào.</p>`;
+    if (albums.length === 0) {
+      adminAlbumsGrid.innerHTML = `<p class="col-span-full text-center text-slate-400 py-6 text-xs">Chưa có folder ảnh nào.</p>`;
       return;
     }
 
-    adminGalleryGrid.innerHTML = gallery.map(item => {
+    adminAlbumsGrid.innerHTML = albums.map(alb => {
+      const count = alb.photoCount || (alb.photos ? alb.photos.length : 0);
       return `
         <div class="relative bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs group">
           <div class="aspect-4/3 overflow-hidden bg-slate-100">
-            <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover" />
+            <img src="${alb.coverImage}" alt="${alb.title}" class="w-full h-full object-cover" />
           </div>
-          <div class="p-3 space-y-1">
-            <span class="text-[10px] font-mono text-orange-600 font-bold uppercase block">${item.category}</span>
-            <div class="text-xs font-bold text-slate-900 truncate">${item.title}</div>
-            <div class="text-[11px] text-slate-400 truncate">${item.caption || item.date}</div>
+          <div class="p-3.5 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono text-orange-600 font-bold uppercase">${alb.sessionName}</span>
+              <span class="text-[10px] text-slate-400 font-mono">${alb.date}</span>
+            </div>
+            <div class="text-xs font-bold text-slate-900 truncate">${alb.title}</div>
+            <div class="text-[11px] text-slate-500 truncate">${count} ảnh trong folder</div>
+            <div class="pt-1">
+              <a href="${alb.driveLink}" target="_blank" class="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-1">
+                ${ICONS.drive} Mở Google Drive
+              </a>
+            </div>
           </div>
-          <button type="button" onclick="window.deletePhotoConfirm('${item.id}')" 
+          <button type="button" onclick="window.deleteAlbumConfirm('${alb.id}')" 
                   class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-600/90 hover:bg-red-600 text-white shadow-sm transition-transform cursor-pointer" 
-                  title="Xóa ảnh này">
+                  title="Xóa folder này">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
           </button>
         </div>
@@ -276,72 +286,74 @@ function initAdminPage() {
     }).join('');
   }
 
-  // Handle Photo File Pick
-  if (photoFileInput) {
-    photoFileInput.addEventListener('change', (e) => {
+  // Handle Cover File Pick
+  if (albumFileInput) {
+    albumFileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
-          activePhotoDataUrl = event.target.result;
-          photoPreviewImg.src = activePhotoDataUrl;
-          photoPreviewContainer.classList.remove('hidden');
-          photoUrlInput.value = '';
+          activeCoverDataUrl = event.target.result;
+          albumPreviewImg.src = activeCoverDataUrl;
+          albumPreviewContainer.classList.remove('hidden');
+          albumUrlInput.value = '';
         };
         reader.readAsDataURL(file);
       }
     });
   }
 
-  // Handle Photo URL Input
-  if (photoUrlInput) {
-    photoUrlInput.addEventListener('input', (e) => {
+  // Handle Cover URL Input
+  if (albumUrlInput) {
+    albumUrlInput.addEventListener('input', (e) => {
       const url = e.target.value.trim();
       if (url) {
-        activePhotoDataUrl = url;
-        photoPreviewImg.src = url;
-        photoPreviewContainer.classList.remove('hidden');
+        activeCoverDataUrl = url;
+        albumPreviewImg.src = url;
+        albumPreviewContainer.classList.remove('hidden');
       }
     });
   }
 
-  // Submit Photo Form
-  if (addPhotoForm) {
-    addPhotoForm.addEventListener('submit', (e) => {
+  // Submit Album Form
+  if (addAlbumForm) {
+    addAlbumForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const title = document.getElementById('photo-title').value.trim();
-      const category = document.getElementById('photo-category').value;
-      const date = document.getElementById('photo-date').value.trim() || 'Tháng 11/2024';
-      const caption = document.getElementById('photo-caption').value.trim();
-      const imageUrl = activePhotoDataUrl || photoUrlInput.value.trim();
+      const sessionName = document.getElementById('album-session').value.trim();
+      const title = document.getElementById('album-title').value.trim();
+      const date = document.getElementById('album-date').value.trim() || 'Tháng 11/2024';
+      const driveLink = document.getElementById('album-drivelink').value.trim();
+      const photoCount = parseInt(document.getElementById('album-count').value, 10) || 15;
+      const description = document.getElementById('album-description').value.trim();
+      const coverImage = activeCoverDataUrl || albumUrlInput.value.trim() || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000';
 
-      if (!imageUrl) {
-        alert('Vui lòng chọn 1 file ảnh từ máy hoặc nhập đường dẫn ảnh (URL)!');
-        return;
-      }
-
-      store.addPhoto({
+      store.addAlbum({
+        sessionName,
         title,
-        category,
         date,
-        caption,
-        imageUrl,
+        driveLink,
+        photoCount,
+        description,
+        coverImage,
+        photos: [
+          { url: coverImage, caption: `${sessionName}: ${title}` }
+        ]
       });
 
-      window.LHPIC.showToast('Đã tải ảnh lên thư viện thành công!');
-      addPhotoForm.reset();
-      activePhotoDataUrl = '';
-      photoPreviewContainer.classList.add('hidden');
+      window.LHPIC.showToast('Đã tạo folder ảnh buổi sinh hoạt mới thành công!');
+      addAlbumForm.reset();
+      activeCoverDataUrl = '';
+      albumPreviewContainer.classList.add('hidden');
       renderDashboard();
     });
   }
 
-  // Delete Photo
-  window.deletePhotoConfirm = function(id) {
-    if (confirm('Bạn có chắc muốn xóa ảnh này khỏi thư viện?')) {
-      store.deletePhoto(id);
-      window.LHPIC.showToast('Đã xóa ảnh.');
+  // Delete Album
+  window.deleteAlbumConfirm = function(id) {
+    if (confirm('Bạn có chắc muốn xóa folder ảnh buổi sinh hoạt này?')) {
+      store.deleteAlbum(id);
+      window.LHPIC.showToast('Đã xóa folder ảnh.');
       renderDashboard();
     }
   };
@@ -349,7 +361,7 @@ function initAdminPage() {
   // Reset to default
   if (resetDefaultsBtn) {
     resetDefaultsBtn.addEventListener('click', () => {
-      if (confirm('Khôi phục toàn bộ dữ liệu sự kiện và ảnh về mặc định ban đầu?')) {
+      if (confirm('Khôi phục toàn bộ dữ liệu buổi sinh hoạt và folder ảnh về mặc định ban đầu?')) {
         store.resetDefaults();
         window.LHPIC.showToast('Đã khôi phục dữ liệu ban đầu.');
         renderDashboard();
@@ -362,7 +374,7 @@ function initAdminPage() {
     exportJsonBtn.addEventListener('click', () => {
       const data = {
         events: store.getEvents(),
-        gallery: store.getGallery(),
+        albums: store.getAlbums(),
         exportedAt: new Date().toISOString(),
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });

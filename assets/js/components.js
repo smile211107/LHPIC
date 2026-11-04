@@ -1,10 +1,7 @@
 /**
  * Reusable Components & Navigation for LHPIC
- * Adheres strictly to UI-UX Pro Max standards:
- * - Clean SVG icons (No emojis used as icons)
- * - 44x44px touch targets
- * - Smooth transition animations
- * - Responsive mobile navigation
+ * Vibe: Câu lạc bộ học sinh năng động, đam mê công nghệ
+ * Tuân thủ UI-UX Pro Max: SVG Icons, 44x44px target, a11y focus
  */
 
 const ICONS = {
@@ -24,6 +21,11 @@ const ICONS = {
   image: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
   award: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
   settings: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  folder: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`,
+  folderOpen: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/></svg>`,
+  drive: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.5 1.15 15l3.43 6 6.55-11.5L7.71 3.5Zm3.71 6.5-3.43 6h13.72l3.43-6H11.42Zm4.87-6.5-6.56 11.5 3.43 6 6.56-11.5-3.43-6Z"/></svg>`,
+  sparkles: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>`,
+  heart: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`,
 };
 
 /**
@@ -35,10 +37,10 @@ function renderNavbar(activePage = 'home') {
 
   const links = [
     { id: 'home', label: 'Trang chủ', href: 'index.html' },
-    { id: 'about', label: 'Về chúng tôi', href: 'about.html' },
-    { id: 'events', label: 'Sự kiện & Hoạt động', href: 'events.html' },
-    { id: 'gallery', label: 'Thư viện ảnh', href: 'gallery.html' },
-    { id: 'contact', label: 'Liên hệ', href: 'contact.html' },
+    { id: 'about', label: 'Về CLB', href: 'about.html' },
+    { id: 'events', label: 'Buổi sinh hoạt & Thử thách', href: 'events.html' },
+    { id: 'gallery', label: 'Kho ảnh từng buổi', href: 'gallery.html' },
+    { id: 'contact', label: 'Giao lưu & Kết nối', href: 'contact.html' },
   ];
 
   const desktopLinksHtml = links.map(link => {
@@ -82,7 +84,7 @@ function renderNavbar(activePage = 'home') {
             <div class="flex flex-col">
               <div class="flex items-center gap-2">
                 <span class="text-xl font-extrabold tracking-tight text-slate-900 font-heading">LHPIC</span>
-                <span class="px-2 py-0.5 text-xs font-mono font-semibold rounded-full bg-slate-900 text-white">THCS</span>
+                <span class="px-2 py-0.5 text-xs font-mono font-semibold rounded-full bg-orange-50 text-orange-700 border border-orange-200">CLB Học Sinh</span>
               </div>
               <span class="text-xs font-medium text-slate-500 hidden sm:block">CLB Tin học THPT Chuyên Lê Hồng Phong</span>
             </div>
@@ -95,13 +97,13 @@ function renderNavbar(activePage = 'home') {
 
           <!-- Action CTA & Admin link -->
           <div class="hidden lg:flex items-center gap-3">
-            <a href="admin.html" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer" title="Trang Quản trị (Admin)">
+            <a href="admin.html" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer" title="Cổng Quản trị BCN">
               ${ICONS.settings}
             </a>
             <a href="https://zalo.me/g/dfmcirov4fictruxm9n4" target="_blank" rel="noopener noreferrer" 
                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm bg-orange-600 hover:bg-orange-700 text-white shadow-sm hover:shadow transition-all duration-200 cursor-pointer">
               ${ICONS.zalo}
-              <span>Nhóm Zalo [LHPIC 2627]</span>
+              <span>Nhóm Giao Lưu [LHPIC 2627]</span>
             </a>
           </div>
 
@@ -129,7 +131,7 @@ function renderNavbar(activePage = 'home') {
           </a>
           <a href="admin.html" class="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 rounded-xl cursor-pointer">
             ${ICONS.settings}
-            <span>Trang Quản trị Admin</span>
+            <span>Trang Quản trị CLB</span>
           </a>
         </div>
       </div>
@@ -179,7 +181,7 @@ function renderFooter() {
               <span class="text-xl font-extrabold tracking-tight text-white font-heading">LHPIC</span>
             </div>
             <p class="text-sm text-slate-400 leading-relaxed">
-              Câu lạc bộ Tin học Trường THPT Chuyên Lê Hồng Phong (TP.HCM). Nơi ươm mầm niềm đam mê lập trình và chuẩn bị hành trang vững chắc cho kỳ thi HSGTP dành cho học sinh THCS.
+              Câu lạc bộ Tin học Trường THPT Chuyên Lê Hồng Phong (TP.HCM). Sân chơi học sinh tự nguyện, nơi cùng nhau thắp lửa đam mê lập trình, chia sẻ thuật toán và kết nối bạn bè cùng sở thích.
             </p>
             <div class="flex items-center gap-3 pt-2">
               <a href="https://www.facebook.com/LHPIC235" target="_blank" rel="noopener noreferrer" 
@@ -197,26 +199,26 @@ function renderFooter() {
 
           <!-- Col 2: Sinh hoạt định kỳ -->
           <div>
-            <h3 class="text-white font-semibold text-sm tracking-wider uppercase mb-4 font-heading">Lịch Sinh Hoạt Cố Định</h3>
+            <h3 class="text-white font-semibold text-sm tracking-wider uppercase mb-4 font-heading">Lịch Sinh Hoạt CLB</h3>
             <ul class="space-y-3 text-sm text-slate-400">
               <li class="flex items-start gap-2.5">
                 <span class="text-orange-500 mt-1">${ICONS.calendar}</span>
                 <div>
                   <strong class="text-slate-200 block">Thứ Bảy hàng tuần:</strong>
-                  <span>13:30 – 16:00 (Học lý thuyết & chuyên đề)</span>
+                  <span>13:30 – 16:00 (Gặp gỡ & sinh hoạt chuyên đề)</span>
                 </div>
               </li>
               <li class="flex items-start gap-2.5">
                 <span class="text-orange-500 mt-1">${ICONS.terminal}</span>
                 <div>
-                  <strong class="text-slate-200 block">Chủ Nhật kế tiếp:</strong>
-                  <span>Kỳ thi Contest thực hành trực tuyến</span>
+                  <strong class="text-slate-200 block">Thử thách cuối tuần:</strong>
+                  <span>Contest online giao lưu tự nguyện</span>
                 </div>
               </li>
               <li class="flex items-start gap-2.5">
                 <span class="text-orange-500 mt-1">${ICONS.mapPin}</span>
                 <div>
-                  <strong class="text-slate-200 block">Địa điểm:</strong>
+                  <strong class="text-slate-200 block">Địa điểm gặp mặt:</strong>
                   <span>Hội trường E, Trường THPT Chuyên Lê Hồng Phong (280 An Dương Vương, Q.5, TP.HCM)</span>
                 </div>
               </li>
@@ -225,21 +227,21 @@ function renderFooter() {
 
           <!-- Col 3: Điều hướng nhanh -->
           <div>
-            <h3 class="text-white font-semibold text-sm tracking-wider uppercase mb-4 font-heading">Khám Phá Website</h3>
+            <h3 class="text-white font-semibold text-sm tracking-wider uppercase mb-4 font-heading">Khám Phá CLB</h3>
             <ul class="space-y-2.5 text-sm">
               <li><a href="index.html" class="hover:text-orange-400 transition-colors cursor-pointer">Trang chủ</a></li>
-              <li><a href="about.html" class="hover:text-orange-400 transition-colors cursor-pointer">Về CLB & Sứ mệnh</a></li>
-              <li><a href="events.html" class="hover:text-orange-400 transition-colors cursor-pointer">Lịch sự kiện & Chuyên đề</a></li>
-              <li><a href="gallery.html" class="hover:text-orange-400 transition-colors cursor-pointer">Thư viện ảnh hoạt động</a></li>
-              <li><a href="contact.html" class="hover:text-orange-400 transition-colors cursor-pointer">Kênh kết nối & Mã QR</a></li>
-              <li><a href="admin.html" class="text-slate-500 hover:text-slate-300 transition-colors cursor-pointer">Cổng Quản trị viên (CMS)</a></li>
+              <li><a href="about.html" class="hover:text-orange-400 transition-colors cursor-pointer">Về CLB & Tinh thần LHPIC</a></li>
+              <li><a href="events.html" class="hover:text-orange-400 transition-colors cursor-pointer">Lịch sinh hoạt & Chuyên đề</a></li>
+              <li><a href="gallery.html" class="hover:text-orange-400 transition-colors cursor-pointer">Kho ảnh theo từng buổi sinh hoạt</a></li>
+              <li><a href="contact.html" class="hover:text-orange-400 transition-colors cursor-pointer">Kênh giao lưu & Mã QR</a></li>
+              <li><a href="admin.html" class="text-slate-500 hover:text-slate-300 transition-colors cursor-pointer">Cổng BCN (CMS)</a></li>
             </ul>
           </div>
 
           <!-- Col 4: Liên hệ & Quét mã -->
           <div>
-            <h3 class="text-white font-semibold text-sm tracking-wider uppercase mb-4 font-heading">Kênh Kết Nối Chính Thức</h3>
-            <p class="text-xs text-slate-400 mb-3">Tham gia nhóm Zalo để nhận thông báo đề thi và tài liệu sinh hoạt sớm nhất:</p>
+            <h3 class="text-white font-semibold text-sm tracking-wider uppercase mb-4 font-heading">Cộng Đồng LHPIC 2627</h3>
+            <p class="text-xs text-slate-400 mb-3">Tham gia nhóm Zalo mở để cùng nhau trao đổi bài tập và cập nhật lịch gặp mặt:</p>
             <div class="bg-slate-800 p-3.5 rounded-xl border border-slate-700/60 flex items-center gap-3">
               <div class="w-16 h-16 bg-white p-1 rounded-lg flex-shrink-0">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://zalo.me/g/dfmcirov4fictruxm9n4" 
@@ -247,9 +249,9 @@ function renderFooter() {
               </div>
               <div class="text-xs space-y-1">
                 <div class="font-bold text-white">[LHPIC 2627]</div>
-                <div class="text-slate-400">Quét mã Zalo để vào nhóm thảo luận</div>
+                <div class="text-slate-400">Quét mã Zalo để vào nhóm trò chuyện</div>
                 <a href="https://zalo.me/g/dfmcirov4fictruxm9n4" target="_blank" class="text-orange-400 hover:underline inline-flex items-center gap-1 font-semibold">
-                  Mở liên kết ${ICONS.arrowRight}
+                  Mở Zalo ${ICONS.arrowRight}
                 </a>
               </div>
             </div>
@@ -259,10 +261,10 @@ function renderFooter() {
 
         <!-- Bottom Copyright -->
         <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© 2024 - 2026 CLB Tin học Trường THPT Chuyên Lê Hồng Phong (LHPIC). All rights reserved.</p>
+          <p>© 2024 - 2026 CLB Tin học Trường THPT Chuyên Lê Hồng Phong (LHPIC) • Made with passion by LHPers.</p>
           <div class="flex items-center gap-6">
-            <span>Thiết kế theo chuẩn UI-UX Pro Max</span>
-            <a href="admin.html" class="hover:text-slate-400">Admin Login</a>
+            <span>Sân chơi phi lợi nhuận của học sinh</span>
+            <a href="admin.html" class="hover:text-slate-400">BCN Login</a>
           </div>
         </div>
       </div>
@@ -292,13 +294,11 @@ function showToast(message, type = 'success') {
     </div>
   `;
 
-  // Animate in
   setTimeout(() => {
     toastEl.classList.remove('translate-y-24', 'opacity-0');
     toastEl.classList.add('translate-y-0', 'opacity-100');
   }, 10);
 
-  // Animate out after 3.5s
   setTimeout(() => {
     toastEl.classList.remove('translate-y-0', 'opacity-100');
     toastEl.classList.add('translate-y-24', 'opacity-0');
@@ -325,8 +325,6 @@ window.LHPIC.renderFooter = renderFooter;
 window.LHPIC.showToast = showToast;
 window.LHPIC.injectIcons = injectIcons;
 
-// Auto-run icon injection on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   injectIcons();
 });
-

@@ -1,147 +1,171 @@
 /**
  * Central Data Store for LHPIC
- * Provides local storage persistence, realistic seed data, and CRUD operations.
+ * Định vị: Câu lạc bộ học sinh đam mê công nghệ & thuật toán
+ * Không mang tính chất trung tâm dạy thêm, không thi cử áp lực
  */
 
 const STORAGE_KEYS = {
-  EVENTS: 'lhpic_events_data_v1',
-  GALLERY: 'lhpic_gallery_data_v1',
+  EVENTS: 'lhpic_events_data_v2',
+  GALLERY_ALBUMS: 'lhpic_albums_data_v2',
   AUTH: 'lhpic_admin_session_v1',
 };
 
-// High quality initial seed events based on LHPIC curriculum & activities
+// Dữ liệu các buổi sinh hoạt giao lưu chuyên đề của CLB
 const DEFAULT_EVENTS = [
   {
     id: 'evt-001',
-    title: 'Buổi 5: Kỹ thuật Hai con trỏ (Two Pointers) & Cửa sổ trượt (Sliding Window)',
-    category: 'Chuyên đề học thuật',
+    title: 'Chuyên đề 05: Thú vị với Kỹ thuật Hai con trỏ & Cửa sổ trượt',
+    category: 'Sinh hoạt chuyên đề',
     status: 'upcoming', // 'upcoming' | 'ongoing' | 'completed'
     date: '2024-11-16',
     time: '13:30 - 16:00',
     location: 'Hội trường E, THPT Chuyên Lê Hồng Phong',
-    instructor: 'Ban Chuyên môn LHPIC (Đội tuyển Tin học Quốc gia & TP)',
-    summary: 'Tìm hiểu cách tối ưu hóa độ phức tạp thuật toán từ O(N²) về O(N) qua các bài toán mảng con, xâu ký tự kinh điển trong đề thi HSGTP.',
+    instructor: 'Nhóm chia sẻ: Anh Nam & Chị Vy (Đội tuyển Tin học LHP)',
+    summary: 'Cùng nhau tìm hiểu cách biến các thuật toán chạy chậm thành siêu nhanh qua những bài toán tư duy thú vị, mang tính ứng dụng cao.',
     coverImage: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop',
-    content: 'Nội dung buổi sinh hoạt gồm: 1. Khái niệm cơ bản về Hai con trỏ chạy cùng chiều & ngược chiều. 2. Ứng dụng cửa sổ trượt tĩnh và động. 3. Phân tích các bài tập HSGTP gần đây. Học sinh cần mang theo laptop cá nhân đã cài sẵn Code::Blocks hoặc VS Code/C++ compiler.',
+    content: 'Chào các bạn! Trong buổi sinh hoạt tuần này, chúng mình sẽ cùng khám phá kỹ thuật Hai con trỏ (Two Pointers) và Cửa sổ trượt (Sliding Window). Không lý thuyết hàn lâm, chúng mình sẽ cùng chia nhóm giải các câu đố thuật toán, hỗ trợ gỡ lỗi code trực tiếp cho nhau. Nhớ mang theo laptop có cài sẵn compiler C++ nhé!',
     docLink: 'https://github.com/lhpic',
     contestLink: '',
     createdAt: '2024-11-01',
   },
   {
     id: 'evt-002',
-    title: 'Contest Luyện tập HSGTP #03: Thuật toán Tham lam (Greedy) & Tìm kiếm Nhị phân',
-    category: 'Contest thực chiến',
+    title: 'Thử thách Cuối tuần #03: Thuật toán Tham lam & Tìm kiếm Nhị phân',
+    category: 'Sân chơi thử sức',
     status: 'ongoing',
     date: '2024-11-10',
     time: '08:00 - 22:00',
-    location: 'Nền tảng Chấm trực tuyến (Online Judge)',
-    instructor: 'Hệ thống Chấm tự động LHPIC OJ',
-    summary: 'Kỳ thi thực hành kiểm tra kỹ năng áp dụng phương pháp tham lam và tìm kiếm nhị phân trên tập kết quả sau buổi học lý thuyết số 4.',
+    location: 'Nền tảng Lập trình trực tuyến LHPIC OJ',
+    instructor: 'Ban Chuyên môn LHPIC',
+    summary: 'Sân chơi giao lưu lập trình tự nguyện cuối tuần, cùng thử sức các câu đố thuật toán thú vị sau buổi sinh hoạt số 4.',
     coverImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop',
-    content: 'Đề thi gồm 4 bài toán phân cấp từ cơ bản đến nâng cao. Thời gian làm bài linh hoạt trong khung giờ mở contest. Bảng xếp hạng cập nhật realtime và có bài giải chi tiết (Editorial) sau khi contest kết thúc.',
+    content: 'Đấu trường vui nhộn mở tự do cho mọi thành viên CLB. Cùng tranh tài xem ai có cách giải sáng tạo và tối ưu nhất. Sau khi kết thúc, chúng mình sẽ có bài chia sẻ ý tưởng giải (Editorial) để mọi người cùng học hỏi lẫn nhau.',
     docLink: '',
     contestLink: 'https://codeforces.com',
     createdAt: '2024-11-03',
   },
   {
     id: 'evt-003',
-    title: 'Buổi 4: Phương pháp Tham lam (Greedy Algorithm) & Ứng dụng thực tế',
-    category: 'Chuyên đề học thuật',
+    title: 'Chuyên đề 04: Giải mã Chiến thuật Tham lam (Greedy Algorithm)',
+    category: 'Sinh hoạt chuyên đề',
     status: 'completed',
     date: '2024-11-02',
     time: '13:30 - 16:00',
     location: 'Hội trường E, THPT Chuyên Lê Hồng Phong',
-    instructor: 'Ban Chuyên môn LHPIC',
-    summary: 'Nắm vững tư tưởng chọn lựa tối ưu cục bộ, chứng minh tính đúng đắn của chiến thuật tham lam và cài đặt mẫu.',
+    instructor: 'Nhóm học sinh Chuyên Tin LHP',
+    summary: 'Khi nào thì chọn cái tốt nhất trước mắt lại mang về kết quả tối ưu toàn cục? Khám phá tư duy thuật toán tham lam qua các trò chơi logic.',
     coverImage: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop',
-    content: 'Buổi học đã diễn ra thành công với sự tham gia của hơn 60 học sinh THCS yêu thích lập trình trên địa bàn TP.HCM.',
+    content: 'Buổi sinh hoạt đã diễn ra vô cùng sôi nổi với sự tham gia của hơn 60 bạn học sinh yêu tin học. Rất nhiều ý tưởng lời giải độc đáo đã được các bạn đưa ra!',
     docLink: 'https://github.com/lhpic',
     contestLink: '',
     createdAt: '2024-10-25',
   },
   {
     id: 'evt-004',
-    title: 'Buổi 3: Cấu trúc dữ liệu Ngăn xếp (Stack) & Hàng đợi (Queue)',
-    category: 'Chuyên đề học thuật',
+    title: 'Chuyên đề 03: Khám phá Cấu trúc Dữ liệu Ngăn xếp & Hàng đợi',
+    category: 'Sinh hoạt chuyên đề',
     status: 'completed',
     date: '2024-10-19',
     time: '13:30 - 16:00',
     location: 'Hội trường E, THPT Chuyên Lê Hồng Phong',
     instructor: 'Ban Chuyên môn LHPIC',
-    summary: 'Khám phá các cấu trúc dữ liệu nền tảng LIFO & FIFO, ứng dụng giải bài toán kiểm tra ngoặc hợp lệ và bài toán phần tử lớn hơn tiếp theo.',
+    summary: 'Hình dung nguyên lý vào trước ra trước (FIFO) và vào sau ra trước (LIFO) qua các tình huống đời sống và bài toán xử lý chuỗi.',
     coverImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop',
-    content: 'Nội dung thực hành phong phú, các bạn học sinh đã nắm vững cách tự cài đặt Stack/Queue và sử dụng std::stack, std::queue trong thư viện STL C++.',
+    content: 'Tự tay cài đặt Stack & Queue và ứng dụng vào giải quyết bài toán kiểm tra dấu ngoặc hợp lệ. Không khí thảo luận theo nhóm tại Hội trường E rất hào hứng.',
     docLink: '',
     contestLink: '',
     createdAt: '2024-10-12',
   },
   {
     id: 'evt-005',
-    title: 'Lễ Khai giảng Khóa Huấn luyện Chuyên đề Tin học LHPIC 2024 - 2025',
-    category: 'Sự kiện đặc biệt',
+    title: 'Ngày hội Gặp gỡ & Khởi động Năm sinh hoạt mới 2024 - 2025',
+    category: 'Giao lưu CLB',
     status: 'completed',
     date: '2024-10-05',
     time: '13:30 - 16:30',
     location: 'Hội trường E, THPT Chuyên Lê Hồng Phong',
-    instructor: 'Ban Chủ nhiệm CLB Tin học LHPIC',
-    summary: 'Gặp gỡ ban cố vấn, định hướng lộ trình học tập ôn luyện HSGTP và làm quen với môi trường học thuật chuyên sâu.',
+    instructor: 'Đội ngũ Ban Điều Hành CLB LHPIC',
+    summary: 'Buổi gặp mặt đầu tiên, làm quen các thành viên mới, chia sẻ đam mê máy tính và thưởng thức trà bánh cùng các trò chơi phá băng.',
     coverImage: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop',
-    content: 'Chào mừng các bạn học sinh THCS thế hệ mới gia nhập đại gia đình Tin học Lê Hồng Phong. Buổi khai giảng tràn ngập năng lượng và sự hào hứng.',
+    content: 'Mở màn cho một năm sinh hoạt tràn đầy năng lượng của cộng đồng Tin học Lê Hồng Phong. Chào đón tất cả các bạn học sinh có chung tình yêu công nghệ!',
     docLink: '',
     contestLink: '',
     createdAt: '2024-09-28',
   }
 ];
 
-// High quality initial seed gallery based on LHPIC Hall E activities & contests
-const DEFAULT_GALLERY = [
+// Dữ liệu Thư viện ảnh được tổ chức theo TỪNG BUỔI SINH HOẠT (Folder/Album)
+// Kèm link dẫn đến Google Drive của từng buổi để xem trọn bộ
+const DEFAULT_ALBUMS = [
   {
-    id: 'gal-001',
-    title: 'Buổi sinh hoạt chuyên đề tại Hội trường E',
-    category: 'Hội trường E',
-    date: 'Tháng 11/2024',
-    imageUrl: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1000&auto=format&fit=crop',
-    caption: 'Học sinh tập trung lắng nghe phân tích thuật toán tối ưu tại Hội trường E, THPT Chuyên Lê Hồng Phong.',
+    id: 'alb-005',
+    sessionName: 'Buổi sinh hoạt 05',
+    title: 'Kỹ thuật Hai con trỏ & Thảo luận nhóm',
+    date: '16/11/2024',
+    coverImage: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop',
+    driveLink: 'https://drive.google.com/drive/folders/1lhpic_session05_drive_sample',
+    photoCount: 18,
+    description: 'Khoảnh khắc các nhóm cùng chụm đầu gỡ bug, thảo luận ý tưởng tối ưu độ phức tạp và giờ giải lao trà bánh vui vẻ.',
+    photos: [
+      { url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop', caption: 'Chụm đầu cùng nhau bàn luận về ý tưởng hai con trỏ chạy ngược chiều' },
+      { url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1000&auto=format&fit=crop', caption: 'Toàn cảnh Hội trường E ngập tràn tiếng gõ phím và thảo luận sôi nổi' },
+      { url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000&auto=format&fit=crop', caption: 'Anh chị ban chuyên môn tận tình ngồi cùng các em để giải đáp từng thắc mắc' }
+    ]
   },
   {
-    id: 'gal-002',
-    title: 'Học sinh say mê thực hành code trên máy tính',
-    category: 'Học sinh & Lập trình',
-    date: 'Tháng 11/2024',
-    imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop',
-    caption: 'Cùng nhau thảo luận test case và sửa lỗi biên dịch trong bài tập thuật toán.',
+    id: 'alb-004',
+    sessionName: 'Buổi sinh hoạt 04',
+    title: 'Chinh phục Tư duy Tham lam & Minigame Thuật toán',
+    date: '02/11/2024',
+    coverImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop',
+    driveLink: 'https://drive.google.com/drive/folders/1lhpic_session04_drive_sample',
+    photoCount: 22,
+    description: 'Những tiếng cười rộn rã trong phần minigame mô phỏng bài toán xếp lịch và nụ cười rạng rỡ khi bài nộp đạt điểm tối đa.',
+    photos: [
+      { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop', caption: 'Tiếng cười rộn rã khi cùng tìm ra phản ví dụ cho thuật toán tham lam sai' },
+      { url: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop', caption: 'Khoảnh khắc tập trung code giải bài tập mô phỏng' }
+    ]
   },
   {
-    id: 'gal-003',
-    title: 'Ban Chuyên môn LHPIC giảng dạy & hướng dẫn',
-    category: 'Ban Chuyên môn',
-    date: 'Tháng 10/2024',
-    imageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000&auto=format&fit=crop',
-    caption: 'Các anh chị ban giảng dạy tận tình hỗ trợ từng bạn học sinh THCS trong giờ bài tập.',
+    id: 'alb-003',
+    sessionName: 'Buổi sinh hoạt 03',
+    title: 'Cấu trúc dữ liệu Ngăn xếp & Hàng đợi vui nhộn',
+    date: '19/10/2024',
+    coverImage: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
+    driveLink: 'https://drive.google.com/drive/folders/1lhpic_session03_drive_sample',
+    photoCount: 15,
+    description: 'Thực hành lập trình C++ vui nhộn, làm quen với thư viện STL và tự chế tạo cấu trúc ngăn xếp của riêng mình.',
+    photos: [
+      { url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop', caption: 'Thao tác gõ phím nhanh nhẹn trên màn hình Code::Blocks' },
+      { url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000&auto=format&fit=crop', caption: 'Trực quan hóa cấu trúc dữ liệu trên máy tính bảng' }
+    ]
   },
   {
-    id: 'gal-004',
-    title: 'Không khí tập trung cao độ trong kỳ Contest',
-    category: 'Contest',
-    date: 'Tháng 10/2024',
-    imageUrl: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop',
-    caption: 'Thực chiến với các bài toán thuật toán đòi hỏi tư duy logic và kỹ năng cài đặt chính xác.',
+    id: 'alb-002',
+    sessionName: 'Thử thách Cuối tuần',
+    title: 'Giao lưu Lập trình Thử sức & Chia sẻ Ý tưởng',
+    date: '10/11/2024',
+    coverImage: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop',
+    driveLink: 'https://drive.google.com/drive/folders/1lhpic_contest_drive_sample',
+    photoCount: 12,
+    description: 'Tổng hợp ảnh chụp màn hình bảng điểm xanh mướt (Accepted) và buổi thảo luận online giải thích thuật toán tối ưu.',
+    photos: [
+      { url: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop', caption: 'Không khí say mê giải thuật toán cuối tuần' }
+    ]
   },
   {
-    id: 'gal-005',
-    title: 'Thảo luận nhóm sôi nổi giải thuật toán hóc búa',
-    category: 'Hội trường E',
-    date: 'Tháng 10/2024',
-    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop',
-    caption: 'Tinh thần đồng đội và học hỏi không ngừng giữa các thành viên CLB.',
-  },
-  {
-    id: 'gal-006',
-    title: 'Vinh danh & Trao phần thưởng cho học sinh xuất sắc',
-    category: 'Sự kiện đặc biệt',
-    date: 'Tháng 10/2024',
-    imageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop',
-    caption: 'Những nụ cười rạng rỡ của các bạn đạt thứ hạng cao sau kỳ thi khảo sát năng khiếu.',
+    id: 'alb-001',
+    sessionName: 'Ngày hội Ra mắt',
+    title: 'Chào đón Thành viên Mới & Gặp gỡ Khởi động',
+    date: '05/10/2024',
+    coverImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop',
+    driveLink: 'https://drive.google.com/drive/folders/1lhpic_welcome_drive_sample',
+    photoCount: 35,
+    description: 'Trọn bộ khoảnh khắc ngày đầu gặp gỡ: trao quà lưu niệm sticker chú gấu trúc LHPIC, trò chơi gắn kết và chụp ảnh tập thể.',
+    photos: [
+      { url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop', caption: 'Nụ cười rạng rỡ của các bạn thành viên mới trong buổi gặp mặt đầu tiên' },
+      { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop', caption: 'Trò chơi phá băng vui nhộn giúp mọi người nhanh chóng kết nối' }
+    ]
   }
 ];
 
@@ -154,8 +178,8 @@ class LHPICStore {
     if (!localStorage.getItem(STORAGE_KEYS.EVENTS)) {
       this.saveEvents(DEFAULT_EVENTS);
     }
-    if (!localStorage.getItem(STORAGE_KEYS.GALLERY)) {
-      this.saveGallery(DEFAULT_GALLERY);
+    if (!localStorage.getItem(STORAGE_KEYS.GALLERY_ALBUMS)) {
+      this.saveAlbums(DEFAULT_ALBUMS);
     }
   }
 
@@ -205,50 +229,61 @@ class LHPICStore {
     return true;
   }
 
-  // ============ GALLERY CRUD ============
-  getGallery() {
+  // ============ GALLERY ALBUMS (THEO TỪNG BUỔI) CRUD ============
+  getAlbums() {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.GALLERY);
-      return data ? JSON.parse(data) : DEFAULT_GALLERY;
+      const data = localStorage.getItem(STORAGE_KEYS.GALLERY_ALBUMS);
+      return data ? JSON.parse(data) : DEFAULT_ALBUMS;
     } catch (e) {
-      console.error('Error reading gallery from storage', e);
-      return DEFAULT_GALLERY;
+      console.error('Error reading albums from storage', e);
+      return DEFAULT_ALBUMS;
     }
   }
 
-  saveGallery(gallery) {
-    localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(gallery));
-    window.dispatchEvent(new CustomEvent('lhpic_data_updated', { detail: { type: 'gallery' } }));
+  saveAlbums(albums) {
+    localStorage.setItem(STORAGE_KEYS.GALLERY_ALBUMS, JSON.stringify(albums));
+    window.dispatchEvent(new CustomEvent('lhpic_data_updated', { detail: { type: 'albums' } }));
   }
 
-  addPhoto(photoData) {
-    const gallery = this.getGallery();
-    const newPhoto = {
-      ...photoData,
-      id: 'gal-' + Date.now(),
+  addAlbum(albumData) {
+    const albums = this.getAlbums();
+    const newAlbum = {
+      ...albumData,
+      id: 'alb-' + Date.now(),
+      photos: albumData.photos || []
     };
-    gallery.unshift(newPhoto);
-    this.saveGallery(gallery);
-    return newPhoto;
+    albums.unshift(newAlbum);
+    this.saveAlbums(albums);
+    return newAlbum;
   }
 
-  deletePhoto(id) {
-    let gallery = this.getGallery();
-    gallery = gallery.filter(g => g.id !== id);
-    this.saveGallery(gallery);
+  updateAlbum(id, updatedFields) {
+    const albums = this.getAlbums();
+    const index = albums.findIndex(a => a.id === id);
+    if (index !== -1) {
+      albums[index] = { ...albums[index], ...updatedFields };
+      this.saveAlbums(albums);
+      return albums[index];
+    }
+    return null;
+  }
+
+  deleteAlbum(id) {
+    let albums = this.getAlbums();
+    albums = albums.filter(a => a.id !== id);
+    this.saveAlbums(albums);
     return true;
   }
 
   // ============ RESET TO DEFAULT ============
   resetDefaults() {
     this.saveEvents(DEFAULT_EVENTS);
-    this.saveGallery(DEFAULT_GALLERY);
+    this.saveAlbums(DEFAULT_ALBUMS);
     return true;
   }
 
   // ============ AUTHENTICATION ============
   login(username, password) {
-    // Default demo credentials: admin / lhpic2024
     if ((username === 'admin' || username === 'lhpic') && (password === 'lhpic2024' || password === 'admin123')) {
       const session = {
         user: username,

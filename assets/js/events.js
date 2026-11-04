@@ -1,5 +1,5 @@
 /**
- * Events Page Functionality
+ * Events Page Functionality: Sinh hoạt chuyên đề & Thử thách giao lưu
  */
 
 function initEventsPage() {
@@ -52,11 +52,11 @@ function initEventsPage() {
     }
     if (status === 'ongoing') {
       return `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-200">
-        <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>Đang diễn ra
+        <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>Đang mở thử thách
       </span>`;
     }
     return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
-      Đã kết thúc
+      Đã diễn ra
     </span>`;
   }
 
@@ -123,7 +123,7 @@ function initEventsPage() {
             <div class="pt-2 flex items-center gap-2">
               <button type="button" onclick="window.openEventModal('${evt.id}')" 
                       class="w-full py-2.5 text-center rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-orange-600 transition-colors cursor-pointer">
-                Xem Chi Tiết Buổi Học
+                Xem Chi Tiết Buổi Sinh Hoạt
               </button>
             </div>
           </div>
@@ -149,7 +149,7 @@ function initEventsPage() {
     modalContent.textContent = evt.content || evt.summary;
 
     let actionsHtml = `
-      <button type="button" onclick="navigator.clipboard.writeText(window.location.href); window.LHPIC.showToast('Đã sao chép liên kết sự kiện!');" 
+      <button type="button" onclick="navigator.clipboard.writeText(window.location.href); window.LHPIC.showToast('Đã sao chép liên kết buổi sinh hoạt!');" 
               class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer">
         ${ICONS.copy} Sao chép link
       </button>
@@ -159,14 +159,14 @@ function initEventsPage() {
       actionsHtml += `
         <a href="${evt.contestLink}" target="_blank" rel="noopener noreferrer" 
            class="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer shadow-xs">
-          Vào thi Contest ${ICONS.externalLink}
+          Thử sức với đề bài ${ICONS.externalLink}
         </a>
       `;
     } else if (evt.docLink) {
       actionsHtml += `
         <a href="${evt.docLink}" target="_blank" rel="noopener noreferrer" 
            class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer shadow-xs">
-          Tải tài liệu bài giảng ${ICONS.externalLink}
+          Xem tài liệu chuyên đề ${ICONS.externalLink}
         </a>
       `;
     }
