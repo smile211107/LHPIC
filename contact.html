@@ -59,40 +59,42 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           
           <!-- Card 1: Zalo Group -->
-          <div class="bg-gradient-to-br from-orange-50/50 via-white to-slate-50 border-2 border-orange-200 rounded-3xl p-6 sm:p-8 shadow-md relative space-y-6">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-orange-600 text-white">
-                Kênh Trao Đổi Chính
-              </span>
-              <span class="text-xs font-mono font-bold text-slate-400">#Zalo_LHPIC</span>
-            </div>
-
-            <div class="flex flex-col sm:flex-row items-center gap-6">
-              <!-- QR Image -->
-              <div class="w-36 h-36 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex-shrink-0 flex items-center justify-center">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://zalo.me/g/dfmcirov4fictruxm9n4" 
-                     alt="Mã QR Nhóm Zalo LHPIC" class="w-full h-full object-contain" />
+          <div class="bg-gradient-to-br from-orange-50/50 via-white to-slate-50 border-2 border-orange-200 rounded-3xl p-6 sm:p-8 shadow-md relative flex flex-col justify-between h-full">
+            <div class="space-y-6">
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-orange-600 text-white">
+                  Kênh Trao Đổi Chính
+                </span>
+                <span class="text-xs font-mono font-bold text-slate-400">#Zalo_LHPIC</span>
               </div>
-              <div class="space-y-2 text-center sm:text-left">
-                <h3 class="text-lg font-extrabold text-slate-900 font-heading">Nhóm Zalo [LHPIC 2627]</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                  Cập nhật lịch sinh hoạt Thứ Bảy tại Hội trường E, link thử thách cuối tuần và cùng nhau trao đổi, hỗ trợ gỡ lỗi code.
-                </p>
-                <div class="text-xs font-mono text-orange-600 font-semibold pt-1">
-                  Quét mã QR bằng ứng dụng Zalo
+
+              <div class="flex flex-col sm:flex-row items-center gap-6">
+                <!-- QR Image -->
+                <div class="w-36 h-36 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex-shrink-0 flex items-center justify-center">
+                  <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://zalo.me/g/dfmcirov4fictruxm9n4" 
+                       alt="Mã QR Nhóm Zalo LHPIC" class="w-full h-full object-contain" />
+                </div>
+                <div class="space-y-2 text-center sm:text-left">
+                  <h3 class="text-lg font-extrabold text-slate-900 font-heading">Nhóm Zalo [LHPIC 2627]</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    Cập nhật lịch sinh hoạt Thứ Bảy tại Hội trường E, link thử thách cuối tuần và cùng nhau trao đổi, hỗ trợ gỡ lỗi code.
+                  </p>
+                  <div class="text-xs font-mono text-orange-600 font-semibold pt-1">
+                    Quét mã QR bằng ứng dụng Zalo
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Buttons -->
-            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <!-- Buttons pinned to bottom -->
+            <div class="pt-6 mt-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <a href="https://zalo.me/g/dfmcirov4fictruxm9n4" target="_blank" rel="noopener noreferrer"
-                 class="w-full sm:flex-1 py-3 px-4 rounded-xl text-center font-bold text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-xs flex items-center justify-center gap-2 text-sm cursor-pointer">
+                 class="w-full sm:flex-1 h-12 py-3 px-4 rounded-xl text-center font-bold text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-xs flex items-center justify-center gap-2 text-sm cursor-pointer">
                 <span>Vào Nhóm Zalo Ngay</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
               </a>
               <button type="button" onclick="navigator.clipboard.writeText('https://zalo.me/g/dfmcirov4fictruxm9n4'); window.LHPIC.showToast('Đã sao chép link nhóm Zalo!');"
-                      class="w-full sm:w-auto py-3 px-4 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                      class="w-full sm:w-auto h-12 py-3 px-4 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer flex-shrink-0">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                 <span>Sao chép link</span>
               </button>
@@ -100,40 +102,42 @@
           </div>
 
           <!-- Card 2: Facebook Fanpage -->
-          <div class="bg-gradient-to-br from-blue-50/50 via-white to-slate-50 border-2 border-blue-200 rounded-3xl p-6 sm:p-8 shadow-md relative space-y-6">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white">
-                Truyền Thông &amp; Bảng Tin
-              </span>
-              <span class="text-xs font-mono font-bold text-slate-400">#FB_LHPIC</span>
-            </div>
-
-            <div class="flex flex-col sm:flex-row items-center gap-6">
-              <!-- QR Image -->
-              <div class="w-36 h-36 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex-shrink-0 flex items-center justify-center">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://www.facebook.com/LHPIC235" 
-                     alt="Mã QR Facebook Fanpage LHPIC" class="w-full h-full object-contain" />
+          <div class="bg-gradient-to-br from-blue-50/50 via-white to-slate-50 border-2 border-blue-200 rounded-3xl p-6 sm:p-8 shadow-md relative flex flex-col justify-between h-full">
+            <div class="space-y-6">
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white">
+                  Truyền Thông &amp; Bảng Tin
+                </span>
+                <span class="text-xs font-mono font-bold text-slate-400">#FB_LHPIC</span>
               </div>
-              <div class="space-y-2 text-center sm:text-left">
-                <h3 class="text-lg font-extrabold text-slate-900 font-heading">Fanpage LHPIC 235</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                  Cập nhật các thông báo chính thức của Ban Giám hiệu, ảnh hoạt động sinh hoạt và các sự kiện ngoại khóa.
-                </p>
-                <div class="text-xs font-mono text-blue-600 font-semibold pt-1">
-                  facebook.com/LHPIC235
+
+              <div class="flex flex-col sm:flex-row items-center gap-6">
+                <!-- QR Image -->
+                <div class="w-36 h-36 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex-shrink-0 flex items-center justify-center">
+                  <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://www.facebook.com/LHPIC235" 
+                       alt="Mã QR Facebook Fanpage LHPIC" class="w-full h-full object-contain" />
+                </div>
+                <div class="space-y-2 text-center sm:text-left">
+                  <h3 class="text-lg font-extrabold text-slate-900 font-heading">Fanpage LHPIC 235</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    Cập nhật các thông báo chính thức của Ban Giám hiệu, ảnh hoạt động sinh hoạt và các sự kiện ngoại khóa.
+                  </p>
+                  <div class="text-xs font-mono text-blue-600 font-semibold pt-1">
+                    facebook.com/LHPIC235
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Buttons -->
-            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <!-- Buttons pinned to bottom -->
+            <div class="pt-6 mt-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <a href="https://www.facebook.com/LHPIC235" target="_blank" rel="noopener noreferrer"
-                 class="w-full sm:flex-1 py-3 px-4 rounded-xl text-center font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs flex items-center justify-center gap-2 text-sm cursor-pointer">
+                 class="w-full sm:flex-1 h-12 py-3 px-4 rounded-xl text-center font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs flex items-center justify-center gap-2 text-sm cursor-pointer">
                 <span>Ghé Thăm Fanpage</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
               </a>
               <button type="button" onclick="navigator.clipboard.writeText('https://www.facebook.com/LHPIC235'); window.LHPIC.showToast('Đã sao chép link Fanpage!');"
-                      class="w-full sm:w-auto py-3 px-4 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                      class="w-full sm:w-auto h-12 py-3 px-4 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer flex-shrink-0">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                 <span>Sao chép link</span>
               </button>
@@ -251,6 +255,10 @@
                         class="w-full py-3 px-6 rounded-xl font-bold text-white bg-slate-900 hover:bg-orange-600 transition-colors shadow-sm cursor-pointer text-sm">
                   Gửi Tin Nhắn Đến LHPIC
                 </button>
+                <div class="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1.5 pt-1">
+                  <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>Tin nhắn sẽ được chuyển trực tiếp đến Ban Chủ nhiệm LHPIC để phản hồi sớm nhất.</span>
+                </div>
               </form>
 
             </div>
@@ -276,8 +284,23 @@
       if (form) {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
-          const name = document.getElementById('sender-name').value;
-          window.LHPIC.showToast(`Cảm ơn bạn ${name}! LHPIC đã nhận được câu hỏi và sẽ liên hệ lại sớm qua Zalo/SĐT.`);
+          const name = document.getElementById('sender-name').value.trim();
+          const phone = document.getElementById('sender-phone').value.trim();
+          const school = document.getElementById('sender-school').value.trim() || 'Chưa ghi rõ trường';
+          const gradeSelect = document.getElementById('sender-class');
+          const grade = gradeSelect.options[gradeSelect.selectedIndex].text;
+          const message = document.getElementById('sender-message').value.trim();
+
+          // Lưu tin nhắn vào Central Store
+          window.LHPIC.store.addMessage({
+            name,
+            phone,
+            school,
+            grade,
+            message
+          });
+
+          window.LHPIC.showToast(`Cảm ơn bạn ${name}! Tin nhắn đã được gửi đến Ban Chủ nhiệm LHPIC. Chúng mình sẽ liên hệ lại sớm!`);
           form.reset();
         });
       }

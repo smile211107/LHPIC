@@ -8,7 +8,32 @@ const STORAGE_KEYS = {
   EVENTS: 'lhpic_events_data_v2',
   GALLERY_ALBUMS: 'lhpic_albums_data_v4',
   AUTH: 'lhpic_admin_session_v1',
+  MESSAGES: 'lhpic_contact_messages_v1',
 };
+
+// Dữ liệu mẫu tin nhắn phụ huynh & học sinh gửi về
+const DEFAULT_MESSAGES = [
+  {
+    id: 'msg-001',
+    name: 'Nguyễn Hoàng Nam',
+    phone: '0903123456',
+    school: 'THCS Lê Quý Đôn (Q.3)',
+    grade: 'Lớp 8',
+    message: 'Em chào anh chị, em muốn hỏi buổi sinh hoạt thứ 7 này ở Hội trường E có cần đăng ký trước không ạ hay chỉ cần mang laptop đến thôi ạ?',
+    createdAt: '2024-11-04 14:15',
+    status: 'new'
+  },
+  {
+    id: 'msg-002',
+    name: 'Cô Trần Mai Hương (Phụ huynh)',
+    phone: '0918987654',
+    school: 'THCS Trần Đại Nghĩa',
+    grade: 'Phụ huynh học sinh',
+    message: 'Tôi muốn tìm hiểu cho con trai học lớp 7 tham gia sinh hoạt lập trình cùng các anh chị. Cho tôi hỏi trường có chỗ đậu xe cho phụ huynh đưa đón không?',
+    createdAt: '2024-11-03 09:30',
+    status: 'read'
+  }
+];
 
 // Dữ liệu các buổi sinh hoạt giao lưu chuyên đề của CLB
 const DEFAULT_EVENTS = [
@@ -160,6 +185,9 @@ class LHPICStore {
     if (!localStorage.getItem(STORAGE_KEYS.GALLERY_ALBUMS)) {
       this.saveAlbums(DEFAULT_ALBUMS);
     }
+    if (!localStorage.getItem(STORAGE_KEYS.MESSAGES)) {
+      this.saveMessages(DEFAULT_MESSAGES);
+    }
   }
 
   // Trích xuất Folder ID từ mọi định dạng link Google Drive
@@ -265,10 +293,58 @@ class LHPICStore {
     return true;
   }
 
+  // ============ CONTACT MESSAGES (HỘM THƯ TIN NHẮN) ============
+  getMessages() {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.MESSAGES);
+      return data ? JSON.parse(data) : DEFAULT_MESSAGES;
+    } catch (e) {
+      console.error('Error reading messages', e);
+      return DEFAULT_MESSAGES;
+    }
+  }
+
+  saveMessages(messages) {
+    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
+    window.dispatchEvent(new CustomEvent('lhpic_data_updated', { detail: { type: 'messages' } }));
+  }
+
+  addMessage(msgData) {
+    const messages = this.getMessages();
+    const newMsg = {
+      ...msgData,
+      id: 'msg-' + Date.now(),
+      createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16),
+      status: 'new'
+    };
+    messages.unshift(newMsg);
+    this.saveMessages(messages);
+    return newMsg;
+  }
+
+  markMessageRead(id) {
+    const messages = this.getMessages();
+    const index = messages.findIndex(m => m.id === id);
+    if (index !== -1) {
+      messages[index].status = 'read';
+      this.saveMessages(messages);
+      return messages[index];
+    }
+    return null;
+  }
+
+  deleteMessage(id) {
+    let messages = this.getMessages();
+    messages = messages.filter(m => m.id !== id);
+    this.saveMessages(messages);
+    return true;
+  }
+
   // Reset về mặc định
   resetDefaults() {
     this.saveEvents(DEFAULT_EVENTS);
     this.saveAlbums(DEFAULT_ALBUMS);
+    this.saveMessages(DEFAULT_MESSAGES);
     return true;
   }
 

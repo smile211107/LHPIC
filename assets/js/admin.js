@@ -19,12 +19,18 @@ function initAdminPage() {
   const statTotalEvents = document.getElementById('stat-total-events');
   const statUpcomingEvents = document.getElementById('stat-upcoming-events');
   const statTotalAlbums = document.getElementById('stat-total-albums');
+  const statTotalMessages = document.getElementById('stat-total-messages');
+  const statUnreadMessages = document.getElementById('stat-unread-messages');
+  const tabMessagesBadge = document.getElementById('tab-messages-badge');
 
   // Tabs
   const tabEventsBtn = document.getElementById('tab-events-btn');
   const tabGalleryBtn = document.getElementById('tab-gallery-btn');
+  const tabMessagesBtn = document.getElementById('tab-messages-btn');
   const sectionEvents = document.getElementById('section-events');
   const sectionGallery = document.getElementById('section-gallery');
+  const sectionMessages = document.getElementById('section-messages');
+  const adminMessagesList = document.getElementById('admin-messages-list');
 
   // Events Table & Modal
   const eventsTbody = document.getElementById('admin-events-tbody');
@@ -90,34 +96,72 @@ function initAdminPage() {
   }
 
   // Switch Tabs
-  tabEventsBtn.addEventListener('click', () => {
-    tabEventsBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer bg-white text-slate-900 shadow-xs border border-slate-200';
-    tabGalleryBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer';
-    sectionEvents.classList.remove('hidden');
-    sectionGallery.classList.add('hidden');
-  });
+  const TAB_ACTIVE_CLASS = 'px-4 sm:px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer bg-white text-slate-900 shadow-xs border border-slate-200 flex items-center gap-2';
+  const TAB_INACTIVE_CLASS = 'px-4 sm:px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer flex items-center gap-2';
 
-  tabGalleryBtn.addEventListener('click', () => {
-    tabGalleryBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer bg-white text-slate-900 shadow-xs border border-slate-200';
-    tabEventsBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer';
-    sectionGallery.classList.remove('hidden');
+  function setActiveTab(tab) {
+    // Reset all tabs
+    tabEventsBtn.className = TAB_INACTIVE_CLASS;
+    tabGalleryBtn.className = TAB_INACTIVE_CLASS;
+    if (tabMessagesBtn) tabMessagesBtn.className = TAB_INACTIVE_CLASS;
+
     sectionEvents.classList.add('hidden');
-  });
+    sectionGallery.classList.add('hidden');
+    if (sectionMessages) sectionMessages.classList.add('hidden');
+
+    if (tab === 'events') {
+      tabEventsBtn.className = TAB_ACTIVE_CLASS;
+      sectionEvents.classList.remove('hidden');
+    } else if (tab === 'gallery') {
+      tabGalleryBtn.className = TAB_ACTIVE_CLASS;
+      sectionGallery.classList.remove('hidden');
+    } else if (tab === 'messages') {
+      if (tabMessagesBtn) tabMessagesBtn.className = TAB_ACTIVE_CLASS;
+      if (sectionMessages) sectionMessages.classList.remove('hidden');
+    }
+  }
+
+  tabEventsBtn.addEventListener('click', () => setActiveTab('events'));
+  tabGalleryBtn.addEventListener('click', () => setActiveTab('gallery'));
+  if (tabMessagesBtn) {
+    tabMessagesBtn.addEventListener('click', () => setActiveTab('messages'));
+  }
 
   // Render Dashboard
   function renderDashboard() {
     renderStats();
     renderEventsTable();
     renderAlbumsGrid();
+    renderMessagesList();
   }
 
   function renderStats() {
     const events = store.getEvents();
     const albums = store.getAlbums();
+    const messages = store.getMessages();
 
     if (statTotalEvents) statTotalEvents.textContent = events.length;
     if (statUpcomingEvents) statUpcomingEvents.textContent = events.filter(e => e.status === 'upcoming').length;
     if (statTotalAlbums) statTotalAlbums.textContent = albums.length;
+    if (statTotalMessages) statTotalMessages.textContent = messages.length;
+
+    const unreadCount = messages.filter(m => m.status === 'new').length;
+    if (statUnreadMessages) {
+      if (unreadCount > 0) {
+        statUnreadMessages.textContent = `${unreadCount} mới`;
+        statUnreadMessages.classList.remove('hidden');
+      } else {
+        statUnreadMessages.classList.add('hidden');
+      }
+    }
+    if (tabMessagesBadge) {
+      if (unreadCount > 0) {
+        tabMessagesBadge.textContent = unreadCount;
+        tabMessagesBadge.classList.remove('hidden');
+      } else {
+        tabMessagesBadge.classList.add('hidden');
+      }
+    }
   }
 
   // ============ EVENTS CRUD ============
@@ -352,10 +396,108 @@ function initAdminPage() {
     }
   };
 
+  // ============ CONTACT MESSAGES (HỘM THƯ HỎI ĐÁP) ============
+  function renderMessagesList() {
+    if (!adminMessagesList) return;
+    const messages = store.getMessages();
+
+    if (messages.length === 0) {
+      adminMessagesList.innerHTML = `
+        <div class="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-400 text-xs">
+          Hòm thư hiện tại đang trống. Tin nhắn của học sinh &amp; phụ huynh từ trang Liên hệ sẽ hiển thị tại đây.
+        </div>
+      `;
+      return;
+    }
+
+    adminMessagesList.innerHTML = messages.map(msg => {
+      const isNew = msg.status === 'new';
+      const cleanPhone = (msg.phone || '').replace(/[^0-9]/g, '');
+      const initials = (msg.name || 'U').charAt(0).toUpperCase();
+
+      return `
+        <div class="bg-white rounded-2xl p-5 sm:p-6 transition-all border ${isNew ? 'border-orange-300 ring-2 ring-orange-100 shadow-sm' : 'border-slate-200'} space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl ${isNew ? 'bg-orange-100 text-orange-700' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-extrabold text-sm">
+                ${initials}
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="font-extrabold text-slate-900 text-sm font-heading">${msg.name}</h4>
+                  ${isNew 
+                    ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-600 text-white">Mới</span>' 
+                    : '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600">Đã đọc</span>'}
+                </div>
+                <div class="text-[11px] text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
+                  <span>${msg.school || 'Chưa ghi rõ trường'}</span>
+                  <span>&bull;</span>
+                  <span class="font-semibold text-slate-700">${msg.grade || 'Học sinh'}</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right text-[11px] font-mono text-slate-400">
+              ${msg.createdAt || ''}
+            </div>
+          </div>
+
+          <!-- Message body -->
+          <div class="text-xs text-slate-800 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 font-sans whitespace-pre-wrap">
+            ${msg.message}
+          </div>
+
+          <!-- Bottom Contact Actions -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div class="flex items-center gap-2">
+              ${msg.phone ? `
+                <a href="tel:${msg.phone}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors">
+                  <svg class="w-3.5 h-3.5 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>Gọi: ${msg.phone}</span>
+                </a>
+                <a href="https://zalo.me/${cleanPhone}" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors">
+                  <svg class="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <span>Mở Zalo chat</span>
+                </a>
+              ` : '<span class="text-xs text-slate-400">Không có SĐT</span>'}
+            </div>
+
+            <div class="flex items-center gap-2">
+              ${isNew ? `
+                <button type="button" onclick="window.markMessageRead('${msg.id}')"
+                        class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer transition-colors">
+                  Đánh dấu đã đọc
+                </button>
+              ` : ''}
+              <button type="button" onclick="window.deleteMessageConfirm('${msg.id}')"
+                      class="px-3 py-1.5 text-xs font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg cursor-pointer transition-colors">
+                Xóa
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.markMessageRead = function(id) {
+    store.markMessageRead(id);
+    window.LHPIC.showToast('Đã đánh dấu đã đọc.');
+    renderDashboard();
+  };
+
+  window.deleteMessageConfirm = function(id) {
+    if (confirm('Bạn có chắc muốn xóa tin nhắn này khỏi hòm thư?')) {
+      store.deleteMessage(id);
+      window.LHPIC.showToast('Đã xóa tin nhắn.');
+      renderDashboard();
+    }
+  };
+
   // Reset to default
   if (resetDefaultsBtn) {
     resetDefaultsBtn.addEventListener('click', () => {
-      if (confirm('Khôi phục toàn bộ dữ liệu buổi sinh hoạt và thư mục Drive về mặc định ban đầu?')) {
+      if (confirm('Khôi phục toàn bộ dữ liệu buổi sinh hoạt, thư mục Drive và tin nhắn về mặc định ban đầu?')) {
         store.resetDefaults();
         window.LHPIC.showToast('Đã khôi phục dữ liệu ban đầu.');
         renderDashboard();
@@ -369,6 +511,7 @@ function initAdminPage() {
       const data = {
         events: store.getEvents(),
         albums: store.getAlbums(),
+        messages: store.getMessages(),
         exportedAt: new Date().toISOString(),
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -378,9 +521,16 @@ function initAdminPage() {
       a.download = `lhpic_backup_${new Date().toISOString().split('T')[0]}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      window.LHPIC.showToast('Đã xuất file sao lưu JSON!');
+      window.LHPIC.showToast('Đã xuất file sao lưu JSON (bao gồm tin nhắn)!');
     });
   }
+
+  // Live update when data changes
+  window.addEventListener('lhpic_data_updated', () => {
+    if (store.isAuthenticated()) {
+      renderDashboard();
+    }
+  });
 
   // Initial Auth Check
   checkAuth();
