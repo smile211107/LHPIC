@@ -39,17 +39,21 @@ function initAdminPage() {
   const addAlbumForm = document.getElementById('add-album-form');
   const albumFileInput = document.getElementById('album-file-input');
   const albumUrlInput = document.getElementById('album-url-input');
+  const albumMultiFiles = document.getElementById('album-multi-files');
   const albumPreviewContainer = document.getElementById('album-preview-container');
   const albumPreviewImg = document.getElementById('album-preview-img');
   const adminAlbumsGrid = document.getElementById('admin-albums-grid');
   const driveBridgeUrlInput = document.getElementById('drive-bridge-url-input');
   const saveDriveBridgeBtn = document.getElementById('save-drive-bridge-btn');
+  const testDriveBridgeBtn = document.getElementById('test-drive-bridge-btn');
+  const driveBridgeStatus = document.getElementById('drive-bridge-status');
 
   // Reset & Backup
   const resetDefaultsBtn = document.getElementById('reset-defaults-btn');
   const exportJsonBtn = document.getElementById('export-json-btn');
 
   let activeCoverDataUrl = '';
+  let uploadedBatchPhotos = [];
 
   // Auth Check
   function checkAuth() {
@@ -122,6 +126,35 @@ function initAdminPage() {
       const url = driveBridgeUrlInput.value.trim();
       store.setDriveBridgeUrl(url);
       window.LHPIC.showToast('Đã lưu cấu hình Google Drive Bridge!');
+    });
+  }
+
+  // Test Google Drive Bridge connection
+  if (testDriveBridgeBtn) {
+    testDriveBridgeBtn.addEventListener('click', async () => {
+      const url = driveBridgeUrlInput.value.trim();
+      if (!url) {
+        alert('Vui lòng dán đường link Web App Google Apps Script vào ô trước khi kiểm tra!');
+        return;
+      }
+      driveBridgeStatus.classList.remove('hidden', 'bg-green-50', 'text-green-800', 'border-green-200', 'bg-red-50', 'text-red-800', 'border-red-200');
+      driveBridgeStatus.classList.add('bg-blue-50', 'text-blue-800', 'border-blue-200');
+      driveBridgeStatus.innerHTML = '⏳ Đang gửi yêu cầu kiểm tra đến Google Apps Script...';
+
+      try {
+        const testRes = await fetch(`${url}?folderId=test&limit=1`);
+        const json = await testRes.json();
+        
+        driveBridgeStatus.className = 'p-3 rounded-xl border text-xs font-medium bg-green-50 text-green-800 border-green-200';
+        driveBridgeStatus.innerHTML = `✅ <strong>Kết nối Google Apps Script thành công!</strong> Script đã phản hồi tốt và sẵn sàng tự động đọc ảnh từ các thư mục Google Drive của CLB.`;
+      } catch (err) {
+        driveBridgeStatus.className = 'p-3 rounded-xl border text-xs font-medium bg-red-50 text-red-800 border-red-200';
+        driveBridgeStatus.innerHTML = `❌ <strong>Chưa thể kết nối:</strong> ${err.message}.<br>
+          <span class="font-normal mt-1 block">
+            • <em>Nguyên nhân phổ biến nhất:</em> Khi bấm "Triển khai (Deploy)" trên script.google.com, mục <strong>"Ai có quyền truy cập"</strong> bị để là "Chỉ mình tôi". Bạn cần chọn <strong>"Bất kỳ ai (Anyone)"</strong>.<br>
+            • Đảm bảo link có đuôi kết thúc bằng <code class="bg-red-100 px-1 py-0.5 rounded">/exec</code> (không phải <code class="bg-red-100 px-1 py-0.5 rounded">/edit</code>).
+          </span>`;
+      }
     });
   }
 
@@ -329,6 +362,34 @@ function initAdminPage() {
     });
   }
 
+  // Handle Batch Multi-Photos upload
+  if (albumMultiFiles) {
+    albumMultiFiles.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+      uploadedBatchPhotos = [];
+
+      window.LHPIC.showToast(`Đang xử lý ${files.length} ảnh xem trước...`);
+      let loaded = 0;
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          uploadedBatchPhotos.push({
+            id: `p-${Date.now()}-${index}`,
+            url: event.target.result,
+            caption: file.name
+          });
+          loaded++;
+          if (loaded === files.length) {
+            window.LHPIC.showToast(`Đã nạp sẵn ${loaded} ảnh vào album!`);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
   // Submit Album Form
   if (addAlbumForm) {
     addAlbumForm.addEventListener('submit', (e) => {
@@ -338,9 +399,17 @@ function initAdminPage() {
       const title = document.getElementById('album-title').value.trim();
       const date = document.getElementById('album-date').value.trim() || 'Tháng 11/2024';
       const driveLink = document.getElementById('album-drivelink').value.trim();
-      const photoCount = parseInt(document.getElementById('album-count').value, 10) || 15;
+      let photoCount = parseInt(document.getElementById('album-count').value, 10) || 15;
       const description = document.getElementById('album-description').value.trim();
       const coverImage = activeCoverDataUrl || albumUrlInput.value.trim() || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000';
+
+      const photos = uploadedBatchPhotos.length > 0 
+        ? uploadedBatchPhotos 
+        : [ { url: coverImage, caption: `${sessionName}: ${title}` } ];
+
+      if (uploadedBatchPhotos.length > 0) {
+        photoCount = uploadedBatchPhotos.length;
+      }
 
       store.addAlbum({
         sessionName,
@@ -350,14 +419,13 @@ function initAdminPage() {
         photoCount,
         description,
         coverImage,
-        photos: [
-          { url: coverImage, caption: `${sessionName}: ${title}` }
-        ]
+        photos: photos
       });
 
-      window.LHPIC.showToast('Đã tạo folder ảnh buổi sinh hoạt mới thành công!');
+      window.LHPIC.showToast(`Đã tạo folder ảnh "${sessionName}" thành công!`);
       addAlbumForm.reset();
       activeCoverDataUrl = '';
+      uploadedBatchPhotos = [];
       albumPreviewContainer.classList.add('hidden');
       renderDashboard();
     });

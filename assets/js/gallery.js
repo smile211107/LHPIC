@@ -27,6 +27,28 @@ function initGalleryPage() {
   const modalPhotoCounterText = document.getElementById('modal-photo-counter-text');
   const modalPhotoCountPill = document.getElementById('modal-photo-count-pill');
   const modalPhotosGrid = document.getElementById('modal-photos-grid');
+  const modalGridContainer = document.getElementById('modal-grid-container');
+  const modalEmbedContainer = document.getElementById('modal-embed-container');
+  const modalDriveIframe = document.getElementById('modal-drive-iframe');
+  const toggleViewGrid = document.getElementById('toggle-view-grid');
+  const toggleViewEmbed = document.getElementById('toggle-view-embed');
+
+  // Toggle View Modes
+  if (toggleViewGrid && toggleViewEmbed) {
+    toggleViewGrid.addEventListener('click', () => {
+      toggleViewGrid.className = 'px-3 py-1 rounded-lg font-bold bg-blue-600 text-white transition-all cursor-pointer';
+      toggleViewEmbed.className = 'px-3 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer';
+      modalGridContainer.classList.remove('hidden');
+      modalEmbedContainer.classList.add('hidden');
+    });
+
+    toggleViewEmbed.addEventListener('click', () => {
+      toggleViewEmbed.className = 'px-3 py-1 rounded-lg font-bold bg-blue-600 text-white transition-all cursor-pointer';
+      toggleViewGrid.className = 'px-3 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer';
+      modalGridContainer.classList.add('hidden');
+      modalEmbedContainer.classList.remove('hidden');
+    });
+  }
 
   // Lightbox elements
   const lightbox = document.getElementById('lightbox-modal');
@@ -128,6 +150,16 @@ function initGalleryPage() {
     if (modalDriveBtn) modalDriveBtn.href = driveUrl;
     if (modalDriveBtnBottom) modalDriveBtnBottom.href = driveUrl;
 
+    const folderId = activeAlbum.driveFolderId || store.extractDriveFolderId(activeAlbum.driveLink);
+    if (modalDriveIframe && folderId) {
+      modalDriveIframe.src = `https://drive.google.com/embeddedfolderview?id=${folderId}#grid`;
+    }
+
+    // Reset về tab Lưới ảnh ban đầu
+    if (toggleViewGrid && toggleViewEmbed) {
+      toggleViewGrid.click();
+    }
+
     // Kiểm tra và hiển thị ảnh
     renderModalPhotosGrid();
 
@@ -137,9 +169,8 @@ function initGalleryPage() {
 
     // Thử nghiệm fetch live từ Google Apps Script nếu có cấu hình Bridge
     const bridgeUrl = store.getDriveBridgeUrl();
-    const folderId = activeAlbum.driveFolderId || store.extractDriveFolderId(activeAlbum.driveLink);
 
-    if (bridgeUrl && folderId && (!activeAlbum.photos || activeAlbum.photos.length <= 3)) {
+    if (bridgeUrl && folderId) {
       try {
         if (modalPhotoCounterText) modalPhotoCounterText.textContent = 'Đang đồng bộ ảnh trực tiếp từ Google Drive...';
         const res = await fetch(`${bridgeUrl}?folderId=${folderId}&limit=50`);
@@ -149,6 +180,8 @@ function initGalleryPage() {
           store.updateAlbum(activeAlbum.id, { photos: data.photos, photoCount: data.photos.length });
           renderModalPhotosGrid();
           window.LHPIC.showToast(`Đã tải thành công ${data.photos.length} ảnh từ Google Drive!`);
+        } else if (data.error) {
+          console.warn('Lỗi Google Drive Bridge:', data.error);
         }
       } catch (err) {
         console.warn('Không thể fetch live từ Drive Apps Script, dùng cache/sample photos:', err);

@@ -119,23 +119,37 @@
           </button>
         </div>
 
-        <!-- Drive Link Top Bar -->
+        <!-- Drive Link Top Bar & View Mode Switcher -->
         <div class="bg-blue-50 px-5 sm:px-6 py-3 border-b border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div class="flex items-center gap-2 text-xs text-blue-900 font-medium">
             <span class="text-blue-600">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.5 1.15 15l3.43 6 6.55-11.5L7.71 3.5Zm3.71 6.5-3.43 6h13.72l3.43-6H11.42Zm4.87-6.5-6.56 11.5 3.43 6 6.56-11.5-3.43-6Z"/></svg>
             </span>
-            <span id="modal-photo-counter-text">Đang tải khoảng 50 ảnh xem trước • Nhấn vào ảnh để xem to</span>
+            <span id="modal-photo-counter-text">Đang hiển thị ảnh xem nhanh • Bấm vào để phóng to</span>
           </div>
-          <a id="modal-drive-btn" href="#" target="_blank" rel="noopener noreferrer" 
-             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer flex-shrink-0">
-            <span>Mở Xem Full Trực Tiếp Trên Google Drive</span>
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-          </a>
+
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <!-- Toggle between Grid View & Direct Drive Embed -->
+            <div class="inline-flex p-1 bg-white rounded-xl border border-blue-200 text-xs">
+              <button type="button" id="toggle-view-grid" 
+                      class="px-3 py-1 rounded-lg font-bold bg-blue-600 text-white transition-all cursor-pointer">
+                Lưới ảnh Web
+              </button>
+              <button type="button" id="toggle-view-embed" 
+                      class="px-3 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer" title="Xem trực tiếp trong khung nhúng Google Drive">
+                Khung Drive Trực Tiếp
+              </button>
+            </div>
+
+            <a id="modal-drive-btn" href="#" target="_blank" rel="noopener noreferrer" 
+               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-orange-600 transition-colors shadow-xs cursor-pointer flex-shrink-0" title="Mở thư mục Google Drive gốc trên tab mới">
+              <span>Mở Drive ↗</span>
+            </a>
+          </div>
         </div>
 
-        <!-- Photos Scrollable Body -->
-        <div class="p-5 sm:p-6 overflow-y-auto flex-grow space-y-4">
+        <!-- Photos Scrollable Body (Grid View) -->
+        <div id="modal-grid-container" class="p-5 sm:p-6 overflow-y-auto flex-grow space-y-4">
           <div class="flex items-center justify-between text-xs text-slate-500">
             <span class="font-bold uppercase tracking-wider text-slate-400 font-heading">Ảnh xem nhanh trên web</span>
             <span id="modal-photo-count-pill" class="font-mono bg-slate-100 px-2 py-0.5 rounded-md font-semibold text-slate-700">0 ảnh</span>
@@ -144,6 +158,14 @@
           <!-- Photos Grid (5 cols on large desktop, 4 on md, 3 on sm, 2 on mobile) -->
           <div id="modal-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             <!-- Rendered by gallery.js -->
+          </div>
+        </div>
+
+        <!-- Google Drive Embed View (Direct iframe, zero script needed) -->
+        <div id="modal-embed-container" class="hidden flex-grow p-4 bg-slate-100 overflow-hidden relative">
+          <iframe id="modal-drive-iframe" src="" class="w-full h-full min-h-[480px] rounded-2xl border border-slate-300 bg-white" frameborder="0" allowfullscreen></iframe>
+          <div class="text-[11px] text-slate-500 text-center mt-2">
+            Nếu khung Google Drive yêu cầu đăng nhập hoặc không hiển thị, thư mục cần được bật chia sẻ: <strong>"Bất kỳ ai có đường liên kết đều có thể xem"</strong>.
           </div>
         </div>
 
