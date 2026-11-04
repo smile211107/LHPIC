@@ -98,18 +98,18 @@
     </section>
 
     <!-- Album Photos Modal (Khi ấn vào xem folder) -->
-    <div id="album-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div class="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden animate-modal border border-slate-200 max-h-[90vh] flex flex-col">
+    <div id="album-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+      <div class="relative bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden animate-modal border border-slate-200 max-h-[92vh] flex flex-col">
         
         <!-- Modal Header -->
-        <div class="p-6 bg-slate-900 text-white flex items-start justify-between gap-4 border-b border-slate-800">
+        <div class="p-5 sm:p-6 bg-slate-900 text-white flex items-start justify-between gap-4 border-b border-slate-800">
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span id="modal-session-tag" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-orange-600 text-white"></span>
               <span id="modal-session-date" class="text-xs text-slate-400 font-mono"></span>
             </div>
             <h2 id="modal-session-title" class="text-xl sm:text-2xl font-bold font-heading"></h2>
-            <p id="modal-session-desc" class="text-xs text-slate-300 max-w-2xl leading-relaxed"></p>
+            <p id="modal-session-desc" class="text-xs text-slate-300 max-w-3xl leading-relaxed"></p>
           </div>
           
           <button type="button" id="modal-close-btn" 
@@ -119,27 +119,42 @@
           </button>
         </div>
 
-        <!-- Drive Link Prominent Bar -->
-        <div class="bg-blue-50 px-6 py-3.5 border-b border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div class="flex items-center gap-2.5 text-xs text-blue-900 font-medium">
+        <!-- Drive Link Top Bar -->
+        <div class="bg-blue-50 px-5 sm:px-6 py-3 border-b border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2 text-xs text-blue-900 font-medium">
             <span class="text-blue-600">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.5 1.15 15l3.43 6 6.55-11.5L7.71 3.5Zm3.71 6.5-3.43 6h13.72l3.43-6H11.42Zm4.87-6.5-6.56 11.5 3.43 6 6.56-11.5-3.43-6Z"/></svg>
             </span>
-            <span>Thư mục chứa ảnh gốc chất lượng cao trên Google Drive của CLB:</span>
+            <span id="modal-photo-counter-text">Đang tải khoảng 50 ảnh xem trước • Nhấn vào ảnh để xem to</span>
           </div>
           <a id="modal-drive-btn" href="#" target="_blank" rel="noopener noreferrer" 
-             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer">
-            <span>Mở Folder Google Drive</span>
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer flex-shrink-0">
+            <span>Mở Xem Full Trực Tiếp Trên Google Drive</span>
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
           </a>
         </div>
 
-        <!-- Photos Grid in this folder -->
-        <div class="p-6 overflow-y-auto flex-grow space-y-4">
-          <div class="text-xs font-bold uppercase tracking-wider text-slate-400 font-heading">Ảnh xem nhanh trên web</div>
-          <div id="modal-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <!-- Photos Scrollable Body -->
+        <div class="p-5 sm:p-6 overflow-y-auto flex-grow space-y-4">
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span class="font-bold uppercase tracking-wider text-slate-400 font-heading">Ảnh xem nhanh trên web</span>
+            <span id="modal-photo-count-pill" class="font-mono bg-slate-100 px-2 py-0.5 rounded-md font-semibold text-slate-700">0 ảnh</span>
+          </div>
+
+          <!-- Photos Grid (5 cols on large desktop, 4 on md, 3 on sm, 2 on mobile) -->
+          <div id="modal-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             <!-- Rendered by gallery.js -->
           </div>
+        </div>
+
+        <!-- Modal Bottom Sticky Footer -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <span class="text-slate-500">Cần tải ảnh chất lượng gốc phân giải cao hoặc xem toàn bộ kho lưu trữ?</span>
+          <a id="modal-drive-btn-bottom" href="#" target="_blank" rel="noopener noreferrer" 
+             class="font-bold text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1.5 cursor-pointer">
+            <span>Truy cập thư mục Google Drive của buổi sinh hoạt này</span>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          </a>
         </div>
 
       </div>

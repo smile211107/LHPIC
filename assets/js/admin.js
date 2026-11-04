@@ -42,6 +42,8 @@ function initAdminPage() {
   const albumPreviewContainer = document.getElementById('album-preview-container');
   const albumPreviewImg = document.getElementById('album-preview-img');
   const adminAlbumsGrid = document.getElementById('admin-albums-grid');
+  const driveBridgeUrlInput = document.getElementById('drive-bridge-url-input');
+  const saveDriveBridgeBtn = document.getElementById('save-drive-bridge-btn');
 
   // Reset & Backup
   const resetDefaultsBtn = document.getElementById('reset-defaults-btn');
@@ -109,6 +111,18 @@ function initAdminPage() {
     renderStats();
     renderEventsTable();
     renderAlbumsGrid();
+    if (driveBridgeUrlInput) {
+      driveBridgeUrlInput.value = store.getDriveBridgeUrl();
+    }
+  }
+
+  // Save Google Apps Script Bridge URL
+  if (saveDriveBridgeBtn) {
+    saveDriveBridgeBtn.addEventListener('click', () => {
+      const url = driveBridgeUrlInput.value.trim();
+      store.setDriveBridgeUrl(url);
+      window.LHPIC.showToast('Đã lưu cấu hình Google Drive Bridge!');
+    });
   }
 
   function renderStats() {

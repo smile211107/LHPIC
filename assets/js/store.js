@@ -1,13 +1,14 @@
 /**
  * Central Data Store for LHPIC
  * Định vị: Câu lạc bộ học sinh đam mê công nghệ & thuật toán
- * Không mang tính chất trung tâm dạy thêm, không thi cử áp lực
+ * Hỗ trợ tích hợp Google Drive tải tự động 50 ảnh từ thư mục
  */
 
 const STORAGE_KEYS = {
   EVENTS: 'lhpic_events_data_v2',
-  GALLERY_ALBUMS: 'lhpic_albums_data_v2',
+  GALLERY_ALBUMS: 'lhpic_albums_data_v3',
   AUTH: 'lhpic_admin_session_v1',
+  DRIVE_BRIDGE_URL: 'lhpic_drive_bridge_url_v1',
 };
 
 // Dữ liệu các buổi sinh hoạt giao lưu chuyên đề của CLB
@@ -16,7 +17,7 @@ const DEFAULT_EVENTS = [
     id: 'evt-001',
     title: 'Chuyên đề 05: Thú vị với Kỹ thuật Hai con trỏ & Cửa sổ trượt',
     category: 'Sinh hoạt chuyên đề',
-    status: 'upcoming', // 'upcoming' | 'ongoing' | 'completed'
+    status: 'upcoming',
     date: '2024-11-16',
     time: '13:30 - 16:00',
     location: 'Hội trường E, THPT Chuyên Lê Hồng Phong',
@@ -94,8 +95,49 @@ const DEFAULT_EVENTS = [
   }
 ];
 
-// Dữ liệu Thư viện ảnh được tổ chức theo TỪNG BUỔI SINH HOẠT (Folder/Album)
-// Kèm link dẫn đến Google Drive của từng buổi để xem trọn bộ
+// Helper tạo 50 ảnh mẫu chất lượng cao cho Buổi sinh hoạt 05
+function generateSample50Photos() {
+  const photoStock = [
+    'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=600&auto=format&fit=crop'
+  ];
+
+  const captions = [
+    'Toàn cảnh Hội trường E ngập tràn tiếng gõ phím',
+    'Chụm đầu cùng nhau bàn luận về ý tưởng hai con trỏ',
+    'Anh chị ban chuyên môn hỗ trợ sửa lỗi logic C++',
+    'Không khí tập trung giải bài tập mô phỏng',
+    'Nụ cười khi dòng code đầu tiên chuyển sang màu xanh Accepted',
+    'Minigame thuật toán nhận sticker chú gấu trúc LHPIC',
+    'Cùng kiểm tra test case đặc biệt trên bảng trắng',
+    'Giờ giải lao cùng nhau trò chuyện và thưởng thức trà bánh',
+    'Thành viên mới hào hứng chia sẻ cách giải sáng tạo',
+    'Khoảnh khắc kết thúc buổi sinh hoạt đầy ắp niềm vui'
+  ];
+
+  const photos = [];
+  for (let i = 1; i <= 50; i++) {
+    const stockUrl = photoStock[(i - 1) % photoStock.length];
+    const captionText = captions[(i - 1) % captions.length];
+    photos.push({
+      id: `drive-p-${i}`,
+      url: stockUrl,
+      fullUrl: stockUrl.replace('w=600', 'w=1400'),
+      caption: `Khoảnh khắc #${i}: ${captionText}`
+    });
+  }
+  return photos;
+}
+
+// Thư viện ảnh tổ chức theo Folder từng buổi
 const DEFAULT_ALBUMS = [
   {
     id: 'alb-005',
@@ -104,13 +146,10 @@ const DEFAULT_ALBUMS = [
     date: '16/11/2024',
     coverImage: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop',
     driveLink: 'https://drive.google.com/drive/folders/1lhpic_session05_drive_sample',
-    photoCount: 18,
-    description: 'Khoảnh khắc các nhóm cùng chụm đầu gỡ bug, thảo luận ý tưởng tối ưu độ phức tạp và giờ giải lao trà bánh vui vẻ.',
-    photos: [
-      { url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop', caption: 'Chụm đầu cùng nhau bàn luận về ý tưởng hai con trỏ chạy ngược chiều' },
-      { url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1000&auto=format&fit=crop', caption: 'Toàn cảnh Hội trường E ngập tràn tiếng gõ phím và thảo luận sôi nổi' },
-      { url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000&auto=format&fit=crop', caption: 'Anh chị ban chuyên môn tận tình ngồi cùng các em để giải đáp từng thắc mắc' }
-    ]
+    driveFolderId: '1lhpic_session05_drive_sample',
+    photoCount: 50,
+    description: 'Khoảnh khắc các nhóm cùng chụm đầu gỡ bug, thảo luận ý tưởng tối ưu độ phức tạp và giờ giải lao trà bánh vui vẻ. Có 50 ảnh xem trước trên web.',
+    photos: generateSample50Photos()
   },
   {
     id: 'alb-004',
@@ -119,12 +158,10 @@ const DEFAULT_ALBUMS = [
     date: '02/11/2024',
     coverImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop',
     driveLink: 'https://drive.google.com/drive/folders/1lhpic_session04_drive_sample',
+    driveFolderId: '1lhpic_session04_drive_sample',
     photoCount: 22,
     description: 'Những tiếng cười rộn rã trong phần minigame mô phỏng bài toán xếp lịch và nụ cười rạng rỡ khi bài nộp đạt điểm tối đa.',
-    photos: [
-      { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop', caption: 'Tiếng cười rộn rã khi cùng tìm ra phản ví dụ cho thuật toán tham lam sai' },
-      { url: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop', caption: 'Khoảnh khắc tập trung code giải bài tập mô phỏng' }
-    ]
+    photos: generateSample50Photos().slice(0, 22)
   },
   {
     id: 'alb-003',
@@ -133,12 +170,10 @@ const DEFAULT_ALBUMS = [
     date: '19/10/2024',
     coverImage: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
     driveLink: 'https://drive.google.com/drive/folders/1lhpic_session03_drive_sample',
+    driveFolderId: '1lhpic_session03_drive_sample',
     photoCount: 15,
     description: 'Thực hành lập trình C++ vui nhộn, làm quen với thư viện STL và tự chế tạo cấu trúc ngăn xếp của riêng mình.',
-    photos: [
-      { url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop', caption: 'Thao tác gõ phím nhanh nhẹn trên màn hình Code::Blocks' },
-      { url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000&auto=format&fit=crop', caption: 'Trực quan hóa cấu trúc dữ liệu trên máy tính bảng' }
-    ]
+    photos: generateSample50Photos().slice(0, 15)
   },
   {
     id: 'alb-002',
@@ -147,11 +182,10 @@ const DEFAULT_ALBUMS = [
     date: '10/11/2024',
     coverImage: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop',
     driveLink: 'https://drive.google.com/drive/folders/1lhpic_contest_drive_sample',
-    photoCount: 12,
+    driveFolderId: '1lhpic_contest_drive_sample',
+    photoCount: 18,
     description: 'Tổng hợp ảnh chụp màn hình bảng điểm xanh mướt (Accepted) và buổi thảo luận online giải thích thuật toán tối ưu.',
-    photos: [
-      { url: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1000&auto=format&fit=crop', caption: 'Không khí say mê giải thuật toán cuối tuần' }
-    ]
+    photos: generateSample50Photos().slice(0, 18)
   },
   {
     id: 'alb-001',
@@ -160,12 +194,10 @@ const DEFAULT_ALBUMS = [
     date: '05/10/2024',
     coverImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop',
     driveLink: 'https://drive.google.com/drive/folders/1lhpic_welcome_drive_sample',
+    driveFolderId: '1lhpic_welcome_drive_sample',
     photoCount: 35,
     description: 'Trọn bộ khoảnh khắc ngày đầu gặp gỡ: trao quà lưu niệm sticker chú gấu trúc LHPIC, trò chơi gắn kết và chụp ảnh tập thể.',
-    photos: [
-      { url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop', caption: 'Nụ cười rạng rỡ của các bạn thành viên mới trong buổi gặp mặt đầu tiên' },
-      { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop', caption: 'Trò chơi phá băng vui nhộn giúp mọi người nhanh chóng kết nối' }
-    ]
+    photos: generateSample50Photos().slice(0, 35)
   }
 ];
 
@@ -183,13 +215,20 @@ class LHPICStore {
     }
   }
 
+  // Trích xuất Folder ID từ mọi định dạng link Google Drive
+  extractDriveFolderId(url) {
+    if (!url) return '';
+    const match = url.match(/[-\w]{25,}/);
+    return match ? match[0] : url;
+  }
+
   // ============ EVENTS CRUD ============
   getEvents() {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.EVENTS);
       return data ? JSON.parse(data) : DEFAULT_EVENTS;
     } catch (e) {
-      console.error('Error reading events from storage', e);
+      console.error('Error reading events', e);
       return DEFAULT_EVENTS;
     }
   }
@@ -229,13 +268,13 @@ class LHPICStore {
     return true;
   }
 
-  // ============ GALLERY ALBUMS (THEO TỪNG BUỔI) CRUD ============
+  // ============ ALBUMS (FOLDER TỪNG BUỔI) CRUD ============
   getAlbums() {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.GALLERY_ALBUMS);
       return data ? JSON.parse(data) : DEFAULT_ALBUMS;
     } catch (e) {
-      console.error('Error reading albums from storage', e);
+      console.error('Error reading albums', e);
       return DEFAULT_ALBUMS;
     }
   }
@@ -247,9 +286,11 @@ class LHPICStore {
 
   addAlbum(albumData) {
     const albums = this.getAlbums();
+    const folderId = this.extractDriveFolderId(albumData.driveLink);
     const newAlbum = {
       ...albumData,
       id: 'alb-' + Date.now(),
+      driveFolderId: folderId,
       photos: albumData.photos || []
     };
     albums.unshift(newAlbum);
@@ -261,6 +302,9 @@ class LHPICStore {
     const albums = this.getAlbums();
     const index = albums.findIndex(a => a.id === id);
     if (index !== -1) {
+      if (updatedFields.driveLink) {
+        updatedFields.driveFolderId = this.extractDriveFolderId(updatedFields.driveLink);
+      }
       albums[index] = { ...albums[index], ...updatedFields };
       this.saveAlbums(albums);
       return albums[index];
@@ -275,14 +319,23 @@ class LHPICStore {
     return true;
   }
 
-  // ============ RESET TO DEFAULT ============
+  // Cấu hình URL Web App Google Apps Script để load 50 ảnh trực tiếp từ Google Drive
+  getDriveBridgeUrl() {
+    return localStorage.getItem(STORAGE_KEYS.DRIVE_BRIDGE_URL) || '';
+  }
+
+  setDriveBridgeUrl(url) {
+    localStorage.setItem(STORAGE_KEYS.DRIVE_BRIDGE_URL, url.trim());
+  }
+
+  // Reset về mặc định
   resetDefaults() {
     this.saveEvents(DEFAULT_EVENTS);
     this.saveAlbums(DEFAULT_ALBUMS);
     return true;
   }
 
-  // ============ AUTHENTICATION ============
+  // Auth
   login(username, password) {
     if ((username === 'admin' || username === 'lhpic') && (password === 'lhpic2024' || password === 'admin123')) {
       const session = {
@@ -310,6 +363,5 @@ class LHPICStore {
   }
 }
 
-// Global singleton instance
 window.LHPIC = window.LHPIC || {};
 window.LHPIC.store = new LHPICStore();
