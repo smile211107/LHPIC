@@ -78,8 +78,8 @@ function renderNavbar(activePage = 'home') {
           
           <!-- Logo & Brand -->
           <a href="index.html" class="flex items-center gap-3 group cursor-pointer focus:outline-none" aria-label="Trang chủ CLB Tin học LHPIC">
-            <div class="relative w-12 h-12 flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
-              <img src="assets/images/panda-logo.svg" alt="LHPIC Panda Logo" class="w-full h-full object-contain drop-shadow-xs" />
+            <div class="relative w-12 h-12 flex-shrink-0 transition-transform duration-200 group-hover:scale-105 rounded-xl overflow-hidden border border-slate-200 shadow-xs bg-slate-900">
+              <img src="assets/images/lhpic_avt.jpg" onerror="this.src='assets/images/panda-logo.svg'" alt="LHPIC Logo" class="w-full h-full object-cover" />
             </div>
             <div class="flex flex-col">
               <div class="flex items-center gap-2">
@@ -175,8 +175,8 @@ function renderFooter() {
           <!-- Col 1: Brand Info -->
           <div class="space-y-4">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 flex-shrink-0">
-                <img src="assets/images/panda-logo.svg" alt="LHPIC Logo" class="w-full h-full object-contain" />
+              <div class="w-10 h-10 flex-shrink-0 rounded-lg overflow-hidden border border-slate-700 bg-slate-800">
+                <img src="assets/images/lhpic_avt.jpg" onerror="this.src='assets/images/panda-logo.svg'" alt="LHPIC Logo" class="w-full h-full object-cover" />
               </div>
               <span class="text-xl font-extrabold tracking-tight text-white font-heading">LHPIC</span>
             </div>
