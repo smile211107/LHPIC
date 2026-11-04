@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Quản Trị CMS - CLB Tin học LHPIC</title>
+  <meta name="robots" content="noindex, nofollow">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#0F172A',
+              terracotta: '#C2410C',
+              orange: '#EA580C',
+              light: '#F8FAFC',
+            }
+          },
+          fontFamily: {
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/panda-logo.svg">
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans">
+
+  <!-- ==================== VIEW 1: LOGIN ==================== -->
+  <div id="login-view" class="flex-grow flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-8 border border-slate-200 shadow-xl space-y-6">
+      
+      <!-- Brand & Mascot Header -->
+      <div class="text-center space-y-2">
+        <div class="w-20 h-20 mx-auto">
+          <img src="assets/images/panda-logo.svg" alt="LHPIC Logo" class="w-full h-full object-contain" />
+        </div>
+        <h1 class="text-2xl font-black text-slate-900 font-heading">LHPIC Admin CMS</h1>
+        <p class="text-xs text-slate-500">Cổng quản trị dành cho Ban Chủ nhiệm &amp; Ban Truyền thông</p>
+      </div>
+
+      <!-- Demo credential tip box -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 space-y-1">
+        <div class="font-bold flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Tài khoản đăng nhập thử nghiệm:
+        </div>
+        <div>Tên đăng nhập: <code class="font-mono font-bold bg-amber-100 px-1 py-0.5 rounded">admin</code></div>
+        <div>Mật khẩu: <code class="font-mono font-bold bg-amber-100 px-1 py-0.5 rounded">lhpic2024</code></div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="admin-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="login-username">Tên đăng nhập</label>
+          <input type="text" id="login-username" required value="admin" 
+                 class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white transition-all">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="login-password">Mật khẩu</label>
+          <input type="password" id="login-password" required value="lhpic2024" 
+                 class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white transition-all">
+        </div>
+
+        <button type="submit" 
+                class="w-full py-3 px-4 rounded-xl font-bold text-white bg-slate-900 hover:bg-orange-600 transition-colors shadow-sm cursor-pointer text-sm">
+          Đăng Nhập Vào Hệ Thống
+        </button>
+      </form>
+
+      <div class="text-center pt-2">
+        <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800 transition-colors">
+          ← Quay lại trang chủ website
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== VIEW 2: DASHBOARD ==================== -->
+  <div id="dashboard-view" class="hidden flex-col min-h-screen">
+    
+    <!-- Top Admin Header Bar -->
+    <header class="bg-slate-900 text-white sticky top-0 z-40 border-b border-slate-800 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          
+          <div class="flex items-center gap-3">
+            <a href="index.html" class="w-9 h-9 flex-shrink-0" title="Xem trang chủ">
+              <img src="assets/images/panda-logo.svg" alt="LHPIC Logo" class="w-full h-full object-contain" />
+            </a>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-base tracking-tight font-heading">LHPIC CMS</span>
+              <span class="px-2 py-0.5 rounded-md bg-orange-600 text-[10px] font-mono font-bold">Quản trị</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a href="index.html" target="_blank" 
+               class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors">
+              <span>Xem Website</span>
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+            <button type="button" id="logout-btn" 
+                    class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-red-600/90 hover:bg-red-600 text-white transition-colors cursor-pointer">
+              <span>Đăng xuất</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      
+      <!-- Summary Stats & Global Actions -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Sự Kiện</div>
+            <div id="stat-total-events" class="text-2xl font-black text-slate-900 font-heading mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Sắp Diễn Ra</div>
+            <div id="stat-upcoming-events" class="text-2xl font-black text-amber-600 font-heading mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Ảnh Thư Viện</div>
+            <div id="stat-total-photos" class="text-2xl font-black text-blue-600 font-heading mt-1">0</div>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-center gap-2">
+          <button type="button" id="reset-defaults-btn" 
+                  class="w-full py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer text-center">
+            🔄 Khôi phục dữ liệu mẫu
+          </button>
+          <button type="button" id="export-json-btn" 
+                  class="w-full py-2 px-3 rounded-xl text-xs font-bold text-orange-700 bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer text-center">
+            💾 Xuất sao lưu JSON
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Main Management Tabs -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        
+        <!-- Tab Bar Header -->
+        <div class="border-b border-slate-200 bg-slate-50 px-6 py-3 flex items-center gap-3">
+          <button type="button" id="tab-events-btn" 
+                  class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer bg-white text-slate-900 shadow-xs border border-slate-200">
+            Quản Lý Sự Kiện &amp; Buổi Học
+          </button>
+          <button type="button" id="tab-gallery-btn" 
+                  class="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer">
+            Quản Lý Thư Viện Ảnh
+          </button>
+        </div>
+
+        <!-- ================= SECTION A: EVENTS MANAGEMENT ================= -->
+        <div id="section-events" class="p-6 sm:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-extrabold text-slate-900 font-heading">Danh Sách Buổi Học &amp; Contest</h2>
+              <p class="text-xs text-slate-500">Thêm, sửa thông tin lịch học hoặc cập nhật trạng thái.</p>
+            </div>
+            <button type="button" id="open-add-event-btn" 
+                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-orange-600 hover:bg-orange-700 transition-colors cursor-pointer shadow-xs">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Thêm Sự Kiện Mới</span>
+            </button>
+          </div>
+
+          <!-- Events Table -->
+          <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+            <table class="w-full text-left text-xs text-slate-600">
+              <thead class="bg-slate-50 text-slate-700 font-bold uppercase tracking-wider border-b border-slate-200">
+                <tr>
+                  <th class="p-3.5">Tiêu đề sự kiện</th>
+                  <th class="p-3.5">Trạng thái</th>
+                  <th class="p-3.5">Ngày &amp; Giờ</th>
+                  <th class="p-3.5">Địa điểm</th>
+                  <th class="p-3.5 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="admin-events-tbody" class="divide-y divide-slate-100">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ================= SECTION B: GALLERY MANAGEMENT ================= -->
+        <div id="section-gallery" class="hidden p-6 sm:p-8 space-y-8">
+          
+          <!-- Upload New Photo Form -->
+          <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+            <div>
+              <h3 class="text-base font-extrabold text-slate-900 font-heading">Tải Ảnh Mới Lên Thư Viện</h3>
+              <p class="text-xs text-slate-500">Tải ảnh chụp tại Hội trường E hoặc ảnh hoạt động CLB lên website.</p>
+            </div>
+
+            <form id="add-photo-form" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1" for="photo-title">Tiêu đề ảnh *</label>
+                  <input type="text" id="photo-title" required placeholder="Học sinh giải đề contest..." 
+                         class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1" for="photo-category">Danh mục album *</label>
+                  <select id="photo-category" 
+                          class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
+                    <option value="Hội trường E">Hội trường E</option>
+                    <option value="Học sinh & Lập trình">Học sinh & Lập trình</option>
+                    <option value="Ban Chuyên môn">Ban Chuyên môn</option>
+                    <option value="Contest">Contest</option>
+                    <option value="Sự kiện đặc biệt">Sự kiện đặc biệt</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1" for="photo-date">Thời gian chụp</label>
+                  <input type="text" id="photo-date" placeholder="Tháng 11/2024" 
+                         class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
+                </div>
+
+              </div>
+
+              <!-- Image Input Option (File or URL) -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Cách 1: Chọn file ảnh từ máy tính (Upload)</label>
+                  <input type="file" id="photo-file-input" accept="image/*" 
+                         class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1" for="photo-url-input">Cách 2: Hoặc nhập đường dẫn ảnh (URL)</label>
+                  <input type="url" id="photo-url-input" placeholder="https://images.unsplash.com/..." 
+                         class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1" for="photo-caption">Mô tả / Chú thích ảnh</label>
+                <input type="text" id="photo-caption" placeholder="Các bạn học sinh thảo luận sôi nổi về test case..." 
+                       class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
+              </div>
+
+              <!-- Image Preview Box -->
+              <div id="photo-preview-container" class="hidden p-3 bg-white rounded-xl border border-slate-200 flex items-center gap-4">
+                <img id="photo-preview-img" src="" alt="Preview" class="w-16 h-16 object-cover rounded-lg" />
+                <span class="text-xs text-slate-600">Xem trước ảnh đã chọn</span>
+              </div>
+
+              <button type="submit" 
+                      class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-slate-900 hover:bg-orange-600 transition-colors cursor-pointer shadow-xs">
+                Tải Lên Thư Viện Ảnh
+              </button>
+            </form>
+          </div>
+
+          <!-- Existing Gallery Photos List -->
+          <div class="space-y-4">
+            <h3 class="text-base font-extrabold text-slate-900 font-heading">Ảnh Hiện Có Trong Thư Viện</h3>
+            <div id="admin-gallery-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODAL: ADD / EDIT EVENT ==================== -->
+  <div id="event-form-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl p-6 sm:p-8 space-y-5 animate-modal border border-slate-200">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 id="event-form-title" class="text-lg font-extrabold text-slate-900 font-heading">Thêm Sự Kiện / Buổi Sinh Hoạt Mới</h3>
+        <button type="button" id="close-event-form-btn" class="text-slate-400 hover:text-slate-700 cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="event-edit-form" class="space-y-4">
+        <input type="hidden" id="form-event-id" value="">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="form-title">Tiêu đề buổi sinh hoạt *</label>
+          <input type="text" id="form-title" required placeholder="Buổi 6: Quy hoạch động căn bản..." 
+                 class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-status">Trạng thái *</label>
+            <select id="form-status" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+              <option value="upcoming">Sắp diễn ra</option>
+              <option value="ongoing">Đang diễn ra</option>
+              <option value="completed">Đã kết thúc</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-category">Thể loại *</label>
+            <select id="form-category" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+              <option value="Chuyên đề học thuật">Chuyên đề học thuật</option>
+              <option value="Contest thực chiến">Contest thực chiến</option>
+              <option value="Sự kiện đặc biệt">Sự kiện đặc biệt</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-date">Ngày diễn ra *</label>
+            <input type="date" id="form-date" required class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-time">Khung giờ</label>
+            <input type="text" id="form-time" value="13:30 - 16:00" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-location">Địa điểm</label>
+            <input type="text" id="form-location" value="Hội trường E, THPT Chuyên Lê Hồng Phong" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="form-instructor">Người phụ trách / Giảng viên</label>
+          <input type="text" id="form-instructor" value="Ban Chuyên môn LHPIC" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="form-cover">Link ảnh bìa (Image URL)</label>
+          <input type="url" id="form-cover" value="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="form-summary">Mô tả tóm tắt *</label>
+          <textarea id="form-summary" rows="2" required placeholder="Nội dung chính của buổi sinh hoạt..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" for="form-content">Nội dung chi tiết &amp; Hướng dẫn chuẩn bị</label>
+          <textarea id="form-content" rows="3" placeholder="Chi tiết các phần kiến thức, tài liệu mang theo..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-doclink">Link tài liệu (nếu có)</label>
+            <input type="url" id="form-doclink" placeholder="https://drive.google.com/..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" for="form-contestlink">Link nộp bài contest (nếu có)</label>
+            <input type="url" id="form-contestlink" placeholder="https://codeforces.com/..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white">
+          </div>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+          <button type="button" id="cancel-event-form-btn" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer">
+            Hủy bỏ
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl font-bold text-xs text-white bg-orange-600 hover:bg-orange-700 transition-colors cursor-pointer shadow-xs">
+            Lưu Sự Kiện
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.initAdminPage) window.initAdminPage();
+    });
+  </script>
+</body>
+</html>

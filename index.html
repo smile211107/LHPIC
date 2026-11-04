@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LHPIC - Câu lạc bộ Tin học Trường THPT Chuyên Lê Hồng Phong</title>
+  <meta name="description" content="Website chính thức của CLB Tin học Trường THPT Chuyên Lê Hồng Phong TP.HCM. Sân chơi lập trình và luyện thi HSGTP dành cho học sinh THCS.">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#0F172A',
+              dark: '#1E293B',
+              terracotta: '#C2410C',
+              orange: '#EA580C',
+              light: '#F8FAFC',
+            }
+          },
+          fontFamily: {
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/panda-logo.svg">
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <div id="navbar-container"></div>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100 py-16 sm:py-24 border-b border-slate-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Left Text Content -->
+          <div class="lg:col-span-7 space-y-6 text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-700 text-xs sm:text-sm font-semibold tracking-wide">
+              <span class="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
+              CLB Tin học Trường THPT Chuyên Lê Hồng Phong (TP.HCM)
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight font-heading">
+              Ươm Mầm Đam Mê Lập Trình &amp; Chinh Phục <span class="text-orange-600 underline decoration-orange-300 decoration-wavy">HSGTP</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+              Chào mừng các bạn học sinh THCS đến với <strong class="text-slate-900">LHPIC</strong>! Sân chơi học thuật Tin học chuyên sâu, rèn luyện tư duy giải thuật, làm quen với đề thi Học sinh giỏi Thành phố và kết nối cộng đồng yêu công nghệ.
+            </p>
+
+            <!-- Schedule Highlight Pill -->
+            <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">
+                  E
+                </div>
+                <div>
+                  <div class="text-xs text-slate-500 font-medium">Lịch sinh hoạt chuyên đề</div>
+                  <div class="text-sm font-bold text-slate-900">13:30 – 16:00 Thứ Bảy @ Hội trường E</div>
+                </div>
+              </div>
+              <div class="border-l border-slate-200 pl-4 hidden sm:block">
+                <div class="text-xs text-slate-500 font-medium">Contest thực hành</div>
+                <div class="text-sm font-bold text-orange-600">Chủ Nhật hàng tuần</div>
+              </div>
+            </div>
+
+            <!-- CTAs -->
+            <div class="flex flex-wrap items-center gap-3.5 pt-2">
+              <a href="https://zalo.me/g/dfmcirov4fictruxm9n4" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer">
+                <span>Vào Nhóm Zalo [LHPIC 2627]</span>
+                <span data-icon="arrowRight" class="inline-flex"></span>
+              </a>
+              <a href="events.html" 
+                 class="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-xs hover:border-slate-300 transition-all duration-200 cursor-pointer">
+                <span>Xem Lịch Buổi Học</span>
+              </a>
+              <a href="https://www.facebook.com/LHPIC235" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer text-sm font-medium">
+                <span data-icon="facebook" class="inline-flex"></span>
+                <span>Fanpage CLB</span>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Right Visual Mascot Hero Card -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-md">
+              
+              <!-- Subtle decorative aura -->
+              <div class="absolute -inset-2 bg-gradient-to-r from-orange-500/20 to-blue-500/20 rounded-3xl blur-xl opacity-60"></div>
+
+              <!-- Main Mascot Card -->
+              <div class="relative bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xl space-y-6">
+                
+                <!-- Mascot Image with Logo Header -->
+                <div class="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto">
+                  <img src="assets/images/panda-logo.svg" alt="LHPIC Panda Mascot" class="w-full h-full object-contain drop-shadow-md transform hover:rotate-2 transition-transform duration-300" />
+                </div>
+
+                <!-- Mascot Info Badge -->
+                <div class="text-center space-y-1">
+                  <h3 class="text-xl font-extrabold text-slate-900 font-heading">Gấu Trúc LHPIC</h3>
+                  <p class="text-xs font-mono text-slate-500">cout &lt;&lt; "Hello World, LHP!";</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100">
+                  <div class="bg-slate-50 p-3 rounded-xl text-center">
+                    <span class="block text-2xl font-black text-slate-900 font-heading">60+</span>
+                    <span class="text-xs font-medium text-slate-500">Học sinh THCS</span>
+                  </div>
+                  <div class="bg-slate-50 p-3 rounded-xl text-center">
+                    <span class="block text-2xl font-black text-orange-600 font-heading">100%</span>
+                    <span class="text-xs font-medium text-slate-500">Miễn phí học tập</span>
+                  </div>
+                </div>
+
+                <!-- Live Tag -->
+                <div class="flex items-center justify-between text-xs text-slate-500 bg-orange-50/70 text-orange-800 px-3 py-2 rounded-xl">
+                  <span class="font-medium">Hội trường E - THPT Chuyên LHP</span>
+                  <span class="font-bold">13:30 - 16:00 T7</span>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Core Pillars Section -->
+    <section class="py-16 bg-white border-b border-slate-200/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-orange-600 font-heading">Mục Tiêu &amp; Sứ Mệnh</h2>
+          <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-heading">
+            Tại Sao Nên Tham Gia CLB Tin Học LHPIC?
+          </p>
+          <p class="text-sm sm:text-base text-slate-600 mt-2">
+            Xây dựng nền móng tư duy lập trình vững chắc từ cấp 2 cùng đội ngũ học sinh chuyên Tin giàu kinh nghiệm.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Pillar 1 -->
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 card-hover">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4">
+              <span data-icon="terminal"></span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2 font-heading">Khơi Dậy Đam Mê Lập Trình</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Truyền cảm hứng yêu thích thuật toán và khoa học máy tính cho các bạn học sinh THCS qua các bài giảng trực quan, dễ tiếp cận.
+            </p>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 card-hover">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
+              <span data-icon="award"></span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2 font-heading">Chuyên Môn Học Thuật Cao</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Giáo trình bài bản từ cơ bản đến nâng cao (Mảng con, Hai con trỏ, Tham lam, Quy hoạch động, Đồ thị) do học sinh chuyên Tin giảng dạy.
+            </p>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 card-hover">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
+              <span data-icon="calendar"></span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2 font-heading">Cọ Xát Đề Thi HSGTP</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Thực hành qua các kỳ Contest hàng tuần mô phỏng phòng thi thật, giúp học sinh làm quen tâm lý và cấu trúc đề thi thành phố.
+            </p>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 card-hover">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+              <span data-icon="user"></span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2 font-heading">Kết Nối &amp; Định Hướng</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Giao lưu với các anh chị cựu học sinh đạt giải quốc gia, mở rộng tầm nhìn về ngành công nghệ thông tin trong tương lai.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Events & Activities (Dynamic from Store) -->
+    <section class="py-16 bg-slate-50 border-b border-slate-200/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-orange-600 font-heading">Hoạt Động Gần Nhất</h2>
+            <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 font-heading">Sự Kiện &amp; Buổi Học Chuyên Đề</p>
+          </div>
+          <a href="events.html" class="inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700 transition-colors cursor-pointer">
+            <span>Xem tất cả buổi học</span>
+            <span data-icon="arrowRight" class="inline-flex"></span>
+          </a>
+        </div>
+
+        <!-- Events Container -->
+        <div id="home-events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered via home.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Featured Gallery Strip -->
+    <section class="py-16 bg-white border-b border-slate-200/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-orange-600 font-heading">Khoảnh Khắc Đáng Nhớ</h2>
+            <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 font-heading">Hình Ảnh Sinh Hoạt Tại Hội Trường E</p>
+          </div>
+          <a href="gallery.html" class="inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700 transition-colors cursor-pointer">
+            <span>Xem trọn bộ thư viện ảnh</span>
+            <span data-icon="arrowRight" class="inline-flex"></span>
+          </a>
+        </div>
+
+        <div id="home-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Rendered via home.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Quick CTA Banner -->
+    <section class="py-14 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-8 bg-slate-800/80 p-8 sm:p-10 rounded-3xl border border-slate-700">
+          <div class="space-y-2 text-center lg:text-left">
+            <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight font-heading">Bạn Muốn Tham Gia Các Buổi Sinh Hoạt LHPIC?</h3>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl">
+              Tham gia ngay vào nhóm Zalo trao đổi chính thức để nhận thông báo thời gian, link tài liệu lý thuyết và đề thi contest hàng tuần.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-4 flex-shrink-0">
+            <a href="https://zalo.me/g/dfmcirov4fictruxm9n4" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 cursor-pointer shadow-lg">
+              <span data-icon="zalo" class="inline-flex"></span>
+              <span>Vào Nhóm Zalo [LHPIC 2627]</span>
+            </a>
+            <a href="contact.html" 
+               class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold bg-slate-700 hover:bg-slate-600 text-white transition-all duration-200 cursor-pointer">
+              <span>Thông Tin Chi Tiết &amp; Mã QR</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/home.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.LHPIC.renderNavbar('home');
+      window.LHPIC.renderFooter();
+      if (window.initHomePage) window.initHomePage();
+    });
+  </script>
+</body>
+</html>
