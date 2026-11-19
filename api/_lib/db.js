@@ -7,7 +7,21 @@ let pool;
 let initializedPromise = null;
 
 function getConnectionString() {
-  return process.env.DATABASE_URL || process.env.POSTGRES_URL || '';
+  const direct =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DATABASE_URL_UNPOOLED ||
+    process.env.POSTGRES_URL_NON_POOLING;
+  if (direct) return direct;
+
+  // Hỗ trợ trường hợp Vercel Neon/Supabase tạo biến có prefix (vd: LHPIC_DATABASE_URL)
+  for (const [key, val] of Object.entries(process.env)) {
+    if (val && /(_DATABASE_URL|_POSTGRES_URL)$/i.test(key)) {
+      return val;
+    }
+  }
+  return '';
 }
 
 export function getPool() {
@@ -46,8 +60,10 @@ async function createTables(client) {
     CREATE TABLE IF NOT EXISTS app_meta (
       key TEXT PRIMARY KEY,
       value TEXT NOT NULL
-    );
+    )
+  `);
 
+  await client.query(`
     CREATE TABLE IF NOT EXISTS events (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
@@ -63,8 +79,10 @@ async function createTables(client) {
       doc_link TEXT NOT NULL DEFAULT '',
       contest_link TEXT NOT NULL DEFAULT '',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
+    )
+  `);
 
+  await client.query(`
     CREATE TABLE IF NOT EXISTS albums (
       id TEXT PRIMARY KEY,
       session_name TEXT NOT NULL,
@@ -75,8 +93,10 @@ async function createTables(client) {
       drive_folder_id TEXT NOT NULL DEFAULT '',
       description TEXT NOT NULL DEFAULT '',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
+    )
+  `);
 
+  await client.query(`
     CREATE TABLE IF NOT EXISTS messages (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -86,7 +106,7 @@ async function createTables(client) {
       message TEXT NOT NULL,
       status TEXT NOT NULL DEFAULT 'new',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
+    )
   `);
 }
 
