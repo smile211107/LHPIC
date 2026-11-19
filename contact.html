@@ -282,8 +282,11 @@
 
       const form = document.getElementById('contact-form');
       if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
           e.preventDefault();
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalText = submitBtn ? submitBtn.textContent : '';
+
           const name = document.getElementById('sender-name').value.trim();
           const phone = document.getElementById('sender-phone').value.trim();
           const school = document.getElementById('sender-school').value.trim() || 'Chưa ghi rõ trường';
@@ -291,17 +294,31 @@
           const grade = gradeSelect.options[gradeSelect.selectedIndex].text;
           const message = document.getElementById('sender-message').value.trim();
 
-          // Lưu tin nhắn vào Central Store
-          window.LHPIC.store.addMessage({
-            name,
-            phone,
-            school,
-            grade,
-            message
-          });
+          try {
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.textContent = 'Đang gửi tin nhắn...';
+            }
 
-          window.LHPIC.showToast(`Cảm ơn bạn ${name}! Tin nhắn đã được gửi đến Ban Chủ nhiệm LHPIC. Chúng mình sẽ liên hệ lại sớm!`);
-          form.reset();
+            // Gửi tin nhắn lên máy chủ và lưu vào cơ sở dữ liệu PostgreSQL
+            await window.LHPIC.store.addMessage({
+              name,
+              phone,
+              school,
+              grade,
+              message
+            });
+
+            window.LHPIC.showToast(`Cảm ơn bạn ${name}! Tin nhắn đã được gửi đến Ban Chủ nhiệm LHPIC. Chúng mình sẽ liên hệ lại sớm!`);
+            form.reset();
+          } catch (err) {
+            window.LHPIC.showToast(err.message || 'Không thể gửi tin nhắn lúc này. Vui lòng thử lại sau!', 'error');
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalText;
+            }
+          }
         });
       }
     });

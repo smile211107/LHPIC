@@ -46,31 +46,21 @@
         <p class="text-xs text-slate-500">Cổng quản trị dành cho Ban Chủ nhiệm CLB</p>
       </div>
 
-      <!-- Demo credential tip box -->
-      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 space-y-1">
-        <div class="font-bold flex items-center gap-1.5">
-          <svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Tài khoản đăng nhập thử nghiệm:
-        </div>
-        <div>Tên đăng nhập: <code class="font-mono font-bold bg-amber-100 px-1 py-0.5 rounded">admin</code></div>
-        <div>Mật khẩu: <code class="font-mono font-bold bg-amber-100 px-1 py-0.5 rounded">lhpic2024</code></div>
-      </div>
-
       <!-- Login Form -->
       <form id="admin-login-form" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1" for="login-username">Tên đăng nhập</label>
-          <input type="text" id="login-username" required value="admin" 
+          <input type="text" id="login-username" required autocomplete="username" placeholder="Nhập tên đăng nhập BCN"
                  class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white transition-all">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1" for="login-password">Mật khẩu</label>
-          <input type="password" id="login-password" required value="lhpic2024" 
+          <input type="password" id="login-password" required autocomplete="current-password" placeholder="Nhập mật khẩu quản trị"
                  class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-slate-50 focus:bg-white transition-all">
         </div>
 
-        <button type="submit" 
+        <button type="submit" id="login-submit-btn"
                 class="w-full py-3 px-4 rounded-xl font-bold text-white bg-slate-900 hover:bg-orange-600 transition-colors shadow-sm cursor-pointer text-sm">
           Đăng Nhập Vào Hệ Thống
         </button>
@@ -175,7 +165,7 @@
       <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         <div class="text-xs text-slate-500 flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Dữ liệu lưu trữ trực tiếp &bull; Hệ thống quản trị hoạt động ổn định</span>
+          <span>Kết nối cơ sở dữ liệu PostgreSQL &bull; Đồng bộ trên mọi thiết bị</span>
         </div>
         <div class="flex items-center gap-2">
           <button type="button" id="export-json-btn" 
@@ -299,15 +289,12 @@
                 <span class="text-[11px] text-slate-400 mt-1 block">Lưu ý: Thư mục Drive phải bật quyền xem là "Bất kỳ ai có đường liên kết".</span>
               </div>
 
-              <!-- Cover Image (File or URL) -->
+              <!-- Cover Image (URL) -->
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Ảnh bìa đại diện thư mục</label>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input type="file" id="album-file-input" accept="image/*" 
-                         class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
-                  <input type="url" id="album-url-input" placeholder="Hoặc dán URL ảnh bìa (https://...)" 
-                         class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
-                </div>
+                <label class="block text-xs font-bold text-slate-700 mb-1" for="album-url-input">Ảnh bìa đại diện thư mục (Image URL)</label>
+                <input type="url" id="album-url-input" placeholder="Dán đường dẫn ảnh bìa (https://...)" 
+                       class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-orange-500 bg-white">
+                <span class="text-[11px] text-slate-400 mt-1 block">Để trống sẽ tự động dùng ảnh bìa mặc định của CLB.</span>
               </div>
 
               <div>
@@ -360,7 +347,7 @@
               <div class="text-xs text-slate-700 leading-relaxed space-y-1.5">
                 <strong class="block text-slate-900 font-bold text-sm">💡 Cơ chế lưu trữ &amp; Nơi nhận tin nhắn:</strong>
                 <p>
-                  1. <strong>Lưu nội bộ trực tiếp:</strong> Khi phụ huynh hoặc học sinh nhấn <em>"Gửi Tin Nhắn"</em> trên trang Liên hệ, toàn bộ nội dung (Họ tên, SĐT, Trường, Lớp, Lời nhắn) sẽ được lưu ngay lập tức vào hòm thư này. Ban Chủ nhiệm có thể xem và bấm nút <strong>Zalo</strong> hoặc <strong>Gọi</strong> để phản hồi ngay mà không sợ thất lạc hay lộ số ra ngoài.
+                  1. <strong>Lưu tập trung trên cơ sở dữ liệu PostgreSQL:</strong> Khi phụ huynh hoặc học sinh nhấn <em>"Gửi Tin Nhắn"</em> trên trang Liên hệ từ bất kỳ thiết bị nào, toàn bộ nội dung (Họ tên, SĐT, Trường, Lớp, Lời nhắn) sẽ được lưu vào database chung và hiển thị ngay tại hòm thư này. Chỉ tài khoản Ban Chủ nhiệm đã đăng nhập mới có quyền xem.
                 </p>
                 <p>
                   2. <strong>Nhận thông báo thẳng về Gmail của CLB (Tùy chọn):</strong> Nếu BCN muốn mỗi khi có tin nhắn mới, thông báo tự động chuyển thẳng về email <code>lhpic235@gmail.com</code> (hoặc email BCN), bạn có thể tích hợp dịch vụ miễn phí như <strong>Formspree</strong> hoặc <strong>Web3Forms</strong>. Chỉ cần thay 1 dòng đường dẫn nhận tin trong file <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200">contact.html</code> là xong!

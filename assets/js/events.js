@@ -1,11 +1,15 @@
 /**
  * Events Page Functionality: Sinh hoạt chuyên đề & Thử thách giao lưu
+ * Fetch dữ liệu động từ API (/api/events)
  */
 
-function initEventsPage() {
+async function initEventsPage() {
   const store = window.LHPIC.store;
   const ICONS = window.LHPIC.ICONS;
+  const esc = window.LHPIC.escapeHtml;
+  const safeUrl = window.LHPIC.sanitizeUrl;
 
+  let allEvents = [];
   let currentStatus = 'all';
   let searchQuery = '';
 
@@ -61,16 +65,15 @@ function initEventsPage() {
   }
 
   function render() {
-    const allEvents = store.getEvents();
     updateCounts(allEvents);
 
     const filtered = allEvents.filter(evt => {
       const matchStatus = currentStatus === 'all' || evt.status === currentStatus;
       const q = searchQuery.toLowerCase();
-      const matchSearch = !q || 
-        evt.title.toLowerCase().includes(q) || 
-        evt.category.toLowerCase().includes(q) || 
-        evt.summary.toLowerCase().includes(q) ||
+      const matchSearch = !q ||
+        (evt.title && evt.title.toLowerCase().includes(q)) ||
+        (evt.category && evt.category.toLowerCase().includes(q)) ||
+        (evt.summary && evt.summary.toLowerCase().includes(q)) ||
         (evt.instructor && evt.instructor.toLowerCase().includes(q));
       return matchStatus && matchSearch;
     });
@@ -87,41 +90,41 @@ function initEventsPage() {
         <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden card-hover flex flex-col justify-between">
           
           <div class="relative h-48 overflow-hidden bg-slate-100">
-            <img src="${evt.coverImage}" alt="${evt.title}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" />
+            <img src="${safeUrl(evt.coverImage, 'assets/images/panda-logo.svg')}" alt="${esc(evt.title)}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" />
             <div class="absolute top-3.5 left-3.5">
               ${getStatusBadge(evt.status)}
             </div>
             <div class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-xs text-white text-xs px-2.5 py-1 rounded-md font-mono">
-              ${evt.date}
+              ${esc(evt.date)}
             </div>
           </div>
 
           <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
             <div>
-              <span class="text-xs font-bold text-orange-600 uppercase tracking-wider block mb-1 font-heading">${evt.category}</span>
-              <h3 class="text-base font-bold text-slate-900 line-clamp-2 leading-snug font-heading">${evt.title}</h3>
-              <p class="text-xs text-slate-500 line-clamp-3 mt-2 leading-relaxed">${evt.summary}</p>
+              <span class="text-xs font-bold text-orange-600 uppercase tracking-wider block mb-1 font-heading">${esc(evt.category)}</span>
+              <h3 class="text-base font-bold text-slate-900 line-clamp-2 leading-snug font-heading">${esc(evt.title)}</h3>
+              <p class="text-xs text-slate-500 line-clamp-3 mt-2 leading-relaxed">${esc(evt.summary)}</p>
             </div>
 
             <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600">
               <div class="flex items-center gap-2">
                 <span class="text-slate-400">${ICONS.clock}</span>
-                <span>${evt.time}</span>
+                <span>${esc(evt.time)}</span>
               </div>
               <div class="flex items-center gap-2">
                 <span class="text-slate-400">${ICONS.mapPin}</span>
-                <span class="truncate">${evt.location}</span>
+                <span class="truncate">${esc(evt.location)}</span>
               </div>
               ${evt.instructor ? `
                 <div class="flex items-center gap-2 text-slate-500">
                   <span class="text-slate-400">${ICONS.user}</span>
-                  <span class="truncate">${evt.instructor}</span>
+                  <span class="truncate">${esc(evt.instructor)}</span>
                 </div>
               ` : ''}
             </div>
 
             <div class="pt-2 flex items-center gap-2">
-              <button type="button" onclick="window.openEventModal('${evt.id}')" 
+              <button type="button" data-open-event="${esc(evt.id)}"
                       class="w-full py-2.5 text-center rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-orange-600 transition-colors cursor-pointer">
                 Xem Chi Tiết Buổi Sinh Hoạt
               </button>
@@ -133,13 +136,20 @@ function initEventsPage() {
     }).join('');
   }
 
+  // Event delegation for opening modal safely
+  gridContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-open-event]');
+    if (btn) {
+      window.openEventModal(btn.getAttribute('data-open-event'));
+    }
+  });
+
   // Open Event Modal
   window.openEventModal = function(id) {
-    const events = store.getEvents();
-    const evt = events.find(e => e.id === id);
+    const evt = allEvents.find(e => e.id === id);
     if (!evt) return;
 
-    modalImage.src = evt.coverImage || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800';
+    modalImage.src = safeUrl(evt.coverImage, 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800');
     modalStatusBadge.innerHTML = getStatusBadge(evt.status);
     modalCategory.textContent = evt.category;
     modalTitle.textContent = evt.title;
@@ -148,8 +158,9 @@ function initEventsPage() {
     modalInstructor.textContent = evt.instructor || 'Ban Chuyên môn LHPIC';
     modalContent.textContent = evt.content || evt.summary;
 
+    const shareUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(evt.id)}`;
     let actionsHtml = `
-      <button type="button" onclick="navigator.clipboard.writeText(window.location.href); window.LHPIC.showToast('Đã sao chép liên kết buổi sinh hoạt!');" 
+      <button type="button" id="modal-copy-link-btn"
               class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer">
         ${ICONS.copy} Sao chép link
       </button>
@@ -157,14 +168,14 @@ function initEventsPage() {
 
     if (evt.contestLink) {
       actionsHtml += `
-        <a href="${evt.contestLink}" target="_blank" rel="noopener noreferrer" 
+        <a href="${safeUrl(evt.contestLink)}" target="_blank" rel="noopener noreferrer" 
            class="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer shadow-xs">
           Thử sức với đề bài ${ICONS.externalLink}
         </a>
       `;
     } else if (evt.docLink) {
       actionsHtml += `
-        <a href="${evt.docLink}" target="_blank" rel="noopener noreferrer" 
+        <a href="${safeUrl(evt.docLink)}" target="_blank" rel="noopener noreferrer" 
            class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer shadow-xs">
           Xem tài liệu chuyên đề ${ICONS.externalLink}
         </a>
@@ -172,6 +183,14 @@ function initEventsPage() {
     }
 
     modalActions.innerHTML = actionsHtml;
+    const copyBtn = document.getElementById('modal-copy-link-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(shareUrl);
+        window.LHPIC.showToast('Đã sao chép liên kết buổi sinh hoạt!');
+      });
+    }
+
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   };
@@ -209,24 +228,33 @@ function initEventsPage() {
     });
   }
 
-  // Initial render
-  render();
+  async function fetchAndRender() {
+    gridContainer.innerHTML = `
+      <div class="col-span-full text-center py-12 text-slate-500 text-sm">
+        Đang tải danh sách buổi sinh hoạt...
+      </div>
+    `;
+    try {
+      allEvents = await store.getEvents();
+      render();
+    } catch (err) {
+      console.error('Lỗi tải events:', err);
+      gridContainer.innerHTML = `
+        <div class="col-span-full text-center py-12 text-red-500 text-sm">
+          Không thể kết nối tới cơ sở dữ liệu. Vui lòng thử tải lại trang.
+        </div>
+      `;
+    }
+  }
+
+  await fetchAndRender();
 
   // Check URL query param for direct event opening
   const urlParams = new URLSearchParams(window.location.search);
   const targetId = urlParams.get('id');
   if (targetId) {
-    setTimeout(() => {
-      window.openEventModal(targetId);
-    }, 150);
+    window.openEventModal(targetId);
   }
-
-  // Listen to store updates from Admin
-  window.addEventListener('lhpic_data_updated', (e) => {
-    if (e.detail && e.detail.type === 'events') {
-      render();
-    }
-  });
 }
 
 window.initEventsPage = initEventsPage;

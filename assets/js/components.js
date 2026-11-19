@@ -317,6 +317,30 @@ function injectIcons() {
   });
 }
 
+/**
+ * Escape HTML special characters to prevent XSS
+ */
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Sanitize URLs before placing into href/src attributes
+ */
+function sanitizeUrl(url, fallback = '#') {
+  const val = String(url ?? '').trim();
+  if (!val) return fallback;
+  if (/^(https?:\/\/|\/|assets\/)/i.test(val)) {
+    return val;
+  }
+  return fallback;
+}
+
 // Expose on window
 window.LHPIC = window.LHPIC || {};
 window.LHPIC.ICONS = ICONS;
@@ -324,6 +348,8 @@ window.LHPIC.renderNavbar = renderNavbar;
 window.LHPIC.renderFooter = renderFooter;
 window.LHPIC.showToast = showToast;
 window.LHPIC.injectIcons = injectIcons;
+window.LHPIC.escapeHtml = escapeHtml;
+window.LHPIC.sanitizeUrl = sanitizeUrl;
 
 document.addEventListener('DOMContentLoaded', () => {
   injectIcons();

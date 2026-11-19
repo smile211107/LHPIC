@@ -1,60 +1,63 @@
 # 🚀 LHPIC - Le Hong Phong Informatics Club Website
 
-Trang web chính thức của **Câu lạc bộ Tin học Trường THPT Chuyên Lê Hồng Phong (TP. Hồ Chí Minh)**.
+Trang web động chính thức của **Câu lạc bộ Tin học Trường THPT Chuyên Lê Hồng Phong (TP. Hồ Chí Minh)**, triển khai trên **Vercel** với **Serverless API (`/api`) + PostgreSQL (Neon / Supabase)**.
 
 ---
 
-## 🌟 1. Định vị & Tinh thần Thiết kế
+## 🌟 1. Kiến trúc hệ thống
 
-* **Sân chơi học sinh tự nguyện, phi lợi nhuận:** Không mang tính chất trung tâm dạy thêm, không áp lực thi cử. Đây là ngôi nhà chung của các bạn học sinh THCS yêu thích máy tính và thuật toán, được dẫn dắt bởi tình yêu công nghệ của học sinh chuyên Tin Lê Hồng Phong.
-* **Phong cách UI-UX Pro Max:** Năng động, hiện đại, thân thiện với học sinh và phụ huynh. Tông màu Xanh đen Navy kết hợp Cam đất/Đỏ gạch nhiệt huyết trên nền sáng.
-* **Linh vật chú Gấu Trúc (Panda LHPIC):** Mang thông điệp *"Code together, Grow together!"*.
-
----
-
-## 📁 2. Cấu trúc 5 Trang Người Dùng & 1 Hệ Thống Quản Trị (CMS)
-
-1. `index.html`: **Trang chủ** — Hero banner, Sứ mệnh 4 trụ cột cộng đồng, Lịch gặp mặt Thứ Bảy tại Hội trường E, Các buổi sinh hoạt gần nhất, **Kho Folder ảnh từng buổi** kèm link Google Drive.
-2. `about.html`: **Về CLB** — Câu chuyện thành lập do học sinh sáng lập, nhịp đập sinh hoạt 4 bước trong tuần, giải đáp thắc mắc cởi mở.
-3. `events.html`: **Buổi sinh hoạt & Thử thách** — Bộ lọc chuyên đề (Sắp diễn ra, Đang mở thử thách, Đã diễn ra), tìm kiếm theo tên, xem chi tiết và tài liệu chia sẻ.
-4. `gallery.html`: **Kho ảnh theo từng buổi sinh hoạt** — Mỗi buổi là 1 Folder ảnh riêng biệt:
-   * Hiển thị số lượng ảnh, ngày chụp, ảnh bìa và mô tả.
-   * **Nút mở Folder Google Drive** trực tiếp để xem trọn bộ ảnh gốc chất lượng cao và tải về máy.
-   * **Nút mở xem ảnh nhanh trên web** kèm Lightbox phóng to ảnh toàn màn hình (hỗ trợ phím mũi tên `←` / `→` và `ESC`).
-5. `contact.html`: **Giao lưu & Kết nối** — Kèm **2 Mã QR quét nhanh** và nút bấm vào **Nhóm Zalo [LHPIC 2627]** và **Fanpage Facebook**, địa chỉ Hội trường E.
-6. `admin.html`: **Cổng Quản trị BCN (CMS)**:
-   * Đăng nhập bảo mật (mặc định: `admin` / `lhpic2024`).
-   * **Quản lý Buổi sinh hoạt:** Thêm, sửa, xóa các chuyên đề và thử thách.
-   * **Quản lý Folder Kho ảnh:** Tạo thư mục buổi sinh hoạt mới, dán link Google Drive, tải ảnh bìa, cập nhật số lượng ảnh.
-   * **Sao lưu dữ liệu JSON** và **Khôi phục dữ liệu ban đầu**.
+* **Frontend:** HTML + Tailwind CSS + Vanilla JS (`index.html`, `about.html`, `events.html`, `gallery.html`, `contact.html`, `admin.html`).
+* **Backend API (Vercel Serverless Functions):**
+  * `GET/POST/DELETE /api/auth` — Xác thực BCN bằng `HttpOnly` signed cookie (tài khoản cấu hình qua biến môi trường).
+  * `GET/POST/PUT/DELETE /api/events` — Quản lý các buổi sinh hoạt & thử thách.
+  * `GET/POST/PUT/DELETE /api/albums` — Quản lý kho thư mục ảnh Google Drive (nhúng xem trực tiếp qua `embeddedfolderview`).
+  * `GET/POST/PATCH/DELETE /api/messages` — Khách gửi tin nhắn liên hệ (công khai), chỉ Admin đăng nhập mới xem/xóa được hòm thư.
+  * `POST /api/reset` — Khôi phục dữ liệu mẫu (chỉ Admin).
+* **Database:** PostgreSQL (`events`, `albums`, `messages`, `app_meta`). Bảng và dữ liệu mẫu sẽ **tự động khởi tạo** ở lần gọi API đầu tiên (hoặc có thể chạy thủ công [db/schema.sql](db/schema.sql)).
 
 ---
 
-## 💻 3. Hướng dẫn xem thử website ngay trên máy tính
+## 🌐 2. Hướng dẫn triển khai trên Vercel + PostgreSQL (Neon / Supabase)
 
-Mở **Terminal** tại thư mục dự án và chạy:
-
+### Bước 1: Đẩy mã nguồn lên GitHub
 ```bash
-cd /Users/Apple/Documents/LHPIC
-python3 -m http.server 3000
+git add .
+git commit -m "Feat: chuyen sang web dong voi Vercel Serverless API va PostgreSQL"
+git push origin main
 ```
 
-Sau đó mở trình duyệt và truy cập:
-* **Trang chủ:** [`http://localhost:3000`](http://localhost:3000)
-* **Kho ảnh từng buổi:** [`http://localhost:3000/gallery.html`](http://localhost:3000/gallery.html)
-* **Cổng quản trị Admin:** [`http://localhost:3000/admin.html`](http://localhost:3000/admin.html)
+### Bước 2: Kết nối cơ sở dữ liệu PostgreSQL trên Vercel
+1. Vào dự án trên [Vercel Dashboard](https://vercel.com) → chọn tab **Storage** (hoặc **Integrations**).
+2. Chọn **Create Database** → chọn **Neon (Serverless Postgres)** hoặc **Supabase** (cả hai đều có gói miễn phí).
+3. Kết nối database với project Vercel này. Vercel sẽ tự động thêm biến môi trường `DATABASE_URL` (hoặc `POSTGRES_URL`).
+
+### Bước 3: Cấu hình biến môi trường Admin
+Vào **Project Settings → Environment Variables** và thêm các biến sau (xem mẫu trong `.env.example`):
+
+| Biến | Mô tả | Ví dụ |
+|------|-------|-------|
+| `DATABASE_URL` | Chuỗi kết nối Postgres (tự có nếu tích hợp Neon/Supabase) | `postgresql://...` |
+| `ADMIN_USERNAME` | Tên đăng nhập trang `/admin` | `admin` |
+| `ADMIN_PASSWORD` | Mật khẩu trang `/admin` (**nên đặt mật khẩu mạnh**) | `MatKhauManh@2026` |
+| `AUTH_SECRET` | Chuỗi bí mật ký cookie phiên đăng nhập (>= 32 ký tự) | `chuoi-ngau-nhien-rat-dai...` |
+
+### Bước 4: Redeploy
+Vào tab **Deployments** → nhấn **Redeploy** để áp dụng các biến môi trường mới. Sau khi deploy xong:
+* Mọi máy truy cập đều đọc chung dữ liệu từ PostgreSQL.
+* Admin thêm buổi sinh hoạt / folder ảnh ở máy này → máy khác tải lại trang sẽ thấy ngay.
+* Phụ huynh/học sinh gửi tin nhắn ở `/contact` → BCN đăng nhập `/admin` trên bất kỳ máy nào cũng thấy ngay.
 
 ---
 
-## 🌐 4. Triển khai miễn phí lên Vercel (`lhpic.vercel.app`)
+## 💻 3. Chạy thử trên máy tính (Local Development)
 
-1. Đẩy mã nguồn lên GitHub:
+1. Cài dependencies:
    ```bash
-   git add .
-   git commit -m "Update: redesign gallery folders with Google Drive links and refresh club community vibe"
-   git push origin main
+   npm install
    ```
-2. Đăng nhập [Vercel](https://vercel.com) > Chọn kho lưu trữ `lhpic`.
-3. Đặt Project Name là **`lhpic`** để có tên miền:
-   👉 **`https://lhpic.vercel.app`**
-4. Nhấn **Deploy**.
+2. Tạo file `.env.local` dựa theo `.env.example` và điền `DATABASE_URL` của Neon/Supabase.
+3. Chạy bằng Vercel CLI (để chạy cả HTML tĩnh và `/api/*`):
+   ```bash
+   npx vercel dev
+   ```
+   Sau đó mở `http://localhost:3000`.

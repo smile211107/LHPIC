@@ -1,0 +1,13 @@
+{
+  "name": "lhpic-website",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website dong cho CLB Tin hoc THPT Chuyen Le Hong Phong (LHPIC) tren Vercel + PostgreSQL",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
